@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Book Recommendation</title>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+    <script type="text/javascript" src="lib/d3.v5.min.js"></script>
+
+    <style>
+        .recommendation {
+            /*margin-top: 10px;*/
+            width: 100%;
+            text-align: center;
+        }
+        .row {
+            display: flex;
+        }
+        .column_left {
+            flex: 70%;
+            padding: 15px;
+            margin: 20px;
+            height: 500px;
+            font-family: American Typewriter;
+            font-size: 20px;
+        }
+        .column_right {
+            flex: 30%;
+            padding: 15px;
+            margin: 20px;
+            height: 500px;
+            font-family: American Typewriter;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body style ="background: #faf1cd">
+        <p style="font-family: American Typewriter; font-size: 40px; text-align: left; margin: 15px;">Recommendation Result:</p>
+    <div class="recommendation">
+        <div class="row">
+            <!--Put visualization in this div-->
+            <div class="column_left" style="background-color:white;" id="data_vis"></div>
+            <!--Put book's information in this div-->
+            <div class="column_right" id="book_info"></div>
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search)
+        var method = params.get("method");
+        if(method=="age"){
+            //age recommendation and visualization
+            var age_group = params.get("age");
+        }
+        else if(method=="region"){
+            //region recommendation and visualization
+            var region = params.get("region");
+        }
+        else if(method=="category"){
+            //category recommendation and visualization
+            var category = params.get("category");
+            
+        }
+        else if(method=="rating"){
+            //rating recommendation and visualization
+            var user_input = params.get("input");
+        }
+        else if(method=="twitter"){
+            
+
+                
+
+        }
+    </script>
+</body>
+</html>

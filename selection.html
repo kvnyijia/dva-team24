@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Book Recommendation</title>
+    <style> 
+        .recommendation {
+            margin-top: 150px;
+            width: 100%;
+            text-align: center;
+        }
+        a.btn {
+            display: inline-block;
+            color: white;
+            background-color: #fe9929;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 2px;
+            font-size: 18px;
+            font-family: "Arial Rounded MT Bold";
+            padding: 30px 30px;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        a.btn:hover {
+            background-color: #d95f0e;
+        }
+        input.btn {
+            display: inline-block;
+            color: white;
+            background-color: #fe9929;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 1px;
+            font-size: 15px;
+            font-family: "Arial Rounded MT Bold";
+            padding: 10px 10px;
+            border-radius: 5px;
+            border-color: #fe9929;
+            margin: 10px;
+        }
+        input.btn:hover {
+            background-color: #d95f0e;
+        }
+        
+        select {
+            /* Reset Select */
+            appearance: none;
+            outline: 0;
+            border: 0;
+            box-shadow: none;
+            /* Personalize */
+            flex: 1;
+            padding: 0 1em;
+            color: #404040;
+            background-color: #fffce8;
+            font-size: 20px;
+            font-family: "Arial Rounded MT Bold";
+            cursor: pointer;
+        }
+        /* Remove IE arrow */
+        select::-ms-expand {
+            display: none;
+        }
+        /* Custom Select wrapper */
+        .select {
+            position: relative;
+            display: flex;
+            height: 3em;
+            border-radius: .25em;
+            overflow: hidden;
+        }
+        /* Arrow */
+        .select::after {
+            content: '\25BC';
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 1em;
+            color: #f39c12;
+            background-color: #fffce8;
+            transition: .25s all ease;
+            pointer-events: none;
+        }
+        /* Transition */
+        .select:hover::after {
+            color:  #d95f0e;
+        }
+        input[type=text]{
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            }
+    </style>
+</head>
+<body style ="background: #faf1cd">
+    <div class="recommendation">
+        <p style="font-family: American Typewriter; font-size: 30px;" id="selection_title"></p>
+        <p id="selection" style="text-align: center; width:200px; margin: auto;"></p>
+        <p id="submit_btn"></p>
+    </div>
+    <script>
+        const params = new URLSearchParams(window.location.search)
+        var method = params.get("method");
+
+        function changeFunc_age() {
+            var age_val = document.getElementById("age_s").value;
+            document.getElementById('submit_btn').innerHTML="<a href='visualization.html?method=age&age="+age_val+"'><input type='submit' value='Submit'class='btn'></a>";
+        }
+        function changeFunc_region() {
+            var region_val = document.getElementById("region_s").value;
+            document.getElementById('submit_btn').innerHTML="<a href='visualization.html?method=region&region="+region_val+"'><input type='submit' value='Submit'class='btn'></a>";
+        }
+        function changeFunc_rating() {
+            var input_val = document.getElementById("user_input").value;
+            document.getElementById('submit_btn').innerHTML="<a href='visualization.html?method=rating&input="+input_val+"'><input type='submit' value='Submit'class='btn'></a>";
+        }
+        if(method=="age"){
+            document.getElementById('selection_title').innerHTML = "What's your age group ?";
+            document.getElementById('selection').className = "select";
+            //add age group here
+            document.getElementById('selection').innerHTML = "<select id='age_s' onchange='changeFunc_age();'><option value='1020'>10-20</option><option value='2130'>21-30</option><option value='3140'>31-40</option><option value='4150'>41-50</option><option value='5160'>51-60</option></select>";
+            changeFunc_age();
+        }
+        else if(method=="region"){
+            document.getElementById('selection_title').innerHTML = "Where are you now ?";
+            document.getElementById('selection').className = "select";
+            //add countries here
+            document.getElementById('selection').innerHTML = "<select id='region_s' onchange='changeFunc_region();'><option value='usa'>USA</option><option value='canada'>Canada</option></select><br>";
+            changeFunc_region()
+        }
+        else if(method=="category"){
+            document.getElementById('selection_title').innerHTML = "Select a category";
+            //add and modify categories here
+            document.getElementById('selection').innerHTML = "<a href='visualization.html?method=category&category=category1' class='btn'>category1</a><br><a href='visualization.html?method=category&category=category2' class='btn'>category2</a><br><a href='visualization.html?method=category&category=category3' class='btn'>category3</a>";
+        }
+        else if(method=="rating"){
+            document.getElementById('selection_title').innerHTML = "Enter your user ID:";
+            //modify user's input here
+            document.getElementById('selection').innerHTML = "<input type='text' id='user_input' onchange='changeFunc_rating();'>";//id="name" name="fname"
+            changeFunc_rating();
+        }
+        
+    </script>
+</body>
+</html>

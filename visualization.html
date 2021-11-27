@@ -55,6 +55,150 @@
         else if(method=="region"){
             //region recommendation and visualization
             var region = params.get("region");
+
+            // Define margin and dimensions for svg
+            var	margin = {top: 15, right: 200, bottom: 15, left: 100};
+            var ww = 1400;
+            var hh = 700;
+            var w = ww - margin.left - margin.right;
+            var h = hh - margin.top - margin.bottom;
+            var book;
+
+            // Create svg
+            var showFiveBooksDiv = d3.select(".column_right");
+
+            var svg = d3.select(".column_left")
+              .append("svg")
+              .attr("preserveAspectRatio", "xMinYMin meet")
+              .style("background-color","#c9e8fd")
+              .attr("viewBox", "0 0 " + w + " " + h)
+              .classed("svg-content", true);
+
+            var countryPaths = svg.append('g')
+              .attr('id', 'countries');
+
+            // Define projection & path required for world map
+            var projection = d3.geoMercator()
+              .translate([w/2, h/2])
+              .scale(150)
+              .center([0, 40]);
+
+            var path = d3.geoPath()
+              .projection(projection);
+
+            // Load data  
+            var worldmap = d3.json('data/world_countries.json', function(err, jsondata) {
+              // console.log(jsondata);
+            });
+
+            var bookRegionWeight = d3.csv('data/region_score_sort.csv');
+
+            Promise.all([
+                // Read files
+                worldmap,
+                bookRegionWeight
+              ])
+              .then(function(data) {
+                // Call ready() 
+                ready(0, data[0], data[1]);
+              });
+
+            // Preprocess data
+            function ready(error, world, b) {
+              // console.log(book);
+              book = b;
+              var selectedCountry = region;
+              
+              var cnt = 0;
+              var fiveBooks = [];
+              for (var i = 0; i < book.length; ++i) {
+                if (book[i]['country'] === selectedCountry) {
+                  fiveBooks.push(book[i]);
+                  cnt = cnt + 1;
+                  if (cnt >= 5) break;
+                }
+              }
+              // Call createMapAndLegend() 
+              createMapAndLegend(world, fiveBooks, selectedCountry);
+            }
+
+            function searchFiveBooks(selected) {
+              var selectedCountry = selected.toLowerCase();
+              var cnt = 0;
+              var fiveBooks = [];
+              for (var i = 0; i < book.length; ++i) {
+                if (book[i]['country'] === selectedCountry) {
+                  fiveBooks.push(book[i]);
+                  cnt = cnt + 1;
+                  if (cnt >= 5) break;
+                }
+              }
+              return fiveBooks;
+            }
+
+            // Create a world map and recommend books for a selected country
+            function createMapAndLegend(world, fiveBooks, selectedCountry) { 
+              // console.log(world);
+              // Define a tooltip
+              var tooltip2;
+
+              // Draw the boundaries of countries
+              countryPaths.selectAll("path")
+                .data(world.features)
+                .enter()
+                .append("path")
+                .attr("class", "countries")
+                .attr("d", path)
+                .attr('fill', function(d) {
+                  return 'grey'; 
+                })
+                .on('mouseover', function(d) {
+                  var countryName = d.properties.name;
+                  // Everytime mouseover, recreate a tooltip
+                  tooltip2 = d3.select(".column_left")
+                    .append("div")
+                    .attr('id', 'tooltip')
+                    .style("position", "absolute")
+                    .style("visibility", "hidden")
+                    .style("background-color", "white")
+                    .style("border", "solid")
+                    .style("border-width", "1px")
+                    .style("border-radius", "5px")
+                    .style("padding", "10px");
+
+                  var fb = searchFiveBooks(countryName);
+                  if (fb.length > 0) {
+                    d3.select('#tooltip')
+                      .selectAll('img')
+                      .data(fb)
+                      .enter()
+                      .append('img')
+                      .attr('src', function(d, i) { return fb[i]['img_s'] });
+                  }
+                  else {
+                    d3.select('#tooltip')
+                      .append('text')
+                      .html('<p>No books!</p>');
+                  }
+                  return tooltip2.style("visibility", "visible");
+                })
+                .on('mousemove', function() { 
+                  return tooltip2.style("top", (event.pageY-0)+"px").style("left", (event.pageX-350)+"px");
+                })
+                .on('mouseout', function() { 
+                  d3.select('#tooltip').remove();
+                  // return tooltip2.style("visibility", "hidden");
+                });
+
+                showFiveBooksDiv.append('img')
+                  .attr("src", fiveBooks[0]['img_l']
+                  );
+                
+                showFiveBooksDiv.append('text')
+                  .html('Book Name: ' + fiveBooks[0]['book_title'] + ', ' +
+                        'ISBN: ' + fiveBooks[0]['isbn'] + '</br>'  
+                  );
+            } // end of createMapAndLegend()
         }
         else if(method=="category"){
             //category recommendation and visualization

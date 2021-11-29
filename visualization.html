@@ -150,11 +150,18 @@
                 .attr("class", "countries")
                 .attr("d", path)
                 .attr('fill', function(d) {
+                  var countryName = d.properties.name.toLowerCase();
+                  if (countryName === region.toLowerCase())
+                    return 'orange';
                   return 'grey'; 
                 })
                 .on('mouseover', function(d) {
-                  var countryName = d.properties.name;
+                  // Change color of a country
+                  d3.select(this)
+                    .attr('fill', 'yellow');
+
                   // Everytime mouseover, recreate a tooltip
+                  var countryName = d.properties.name;
                   tooltip2 = d3.select(".column_left")
                     .append("div")
                     .attr('id', 'tooltip')
@@ -166,14 +173,18 @@
                     .style("border-radius", "5px")
                     .style("padding", "10px");
 
+                  // Show 5 books on the tooltip
                   var fb = searchFiveBooks(countryName);
+                  d3.select('#tooltip')
+                    .append('text')
+                    .html('<p>' + countryName + '</p>');
                   if (fb.length > 0) {
                     d3.select('#tooltip')
                       .selectAll('img')
                       .data(fb)
                       .enter()
                       .append('img')
-                      .attr('src', function(d, i) { return fb[i]['img_s'] });
+                      .attr('src', function(d, i) { return fb[i]['img_s']; });
                   }
                   else {
                     d3.select('#tooltip')
@@ -183,21 +194,30 @@
                   return tooltip2.style("visibility", "visible");
                 })
                 .on('mousemove', function() { 
-                  return tooltip2.style("top", (event.pageY-0)+"px").style("left", (event.pageX-350)+"px");
+                  return tooltip2.style("top", (event.pageY-0)+"px").style("left", (event.pageX-300)+"px");
                 })
-                .on('mouseout', function() { 
+                .on('mouseout', function(d) {
+                  // Change color of a country
+                  var countryName = d.properties.name.toLowerCase();
+                  if (countryName === region.toLowerCase())
+                    d3.select(this)
+                      .attr('fill', 'orange');
+                  else {
+                    d3.select(this)
+                      .attr('fill', 'grey');
+                  }
+                  // Everytime mouseout, delete tooltip 
                   d3.select('#tooltip').remove();
                   // return tooltip2.style("visibility", "hidden");
                 });
 
-                showFiveBooksDiv.append('img')
-                  .attr("src", fiveBooks[0]['img_l']
-                  );
+                showFiveBooksDiv.append('div')
+                  .append('img')
+                  .attr("src", fiveBooks[0]['img_l']);
                 
                 showFiveBooksDiv.append('text')
-                  .html('Book Name: ' + fiveBooks[0]['book_title'] + ', ' +
-                        'ISBN: ' + fiveBooks[0]['isbn'] + '</br>'  
-                  );
+                  .html('Book Name: ' + fiveBooks[0]['book_title'] + '</br>' +
+                        'ISBN: ' + fiveBooks[0]['isbn'] + '</br>');
             } // end of createMapAndLegend()
         }
         else if(method=="category"){

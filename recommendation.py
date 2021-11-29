@@ -10,10 +10,10 @@ def item_item_cf(bookname):
     return "harry potter"
 
 @eel.expose
-def twitter_test():
+def twitter_test(keyword):
     c = twint.Config()
-    c.Search = "fiction"
-    c.Limit = 5
+    c.Search = keyword
+    c.Limit = 30
     c.Pandas = True
     twint.run.Search(c)
     Tweets_df = twint.storage.panda.Tweets_df
@@ -24,7 +24,7 @@ def twitter_test():
     dic_list=[]
     for key in counts:
         if counts[key]>1:
-            tmp_dic={'word': key, 'size': counts[key]*8}
+            tmp_dic={'word': key, 'size': counts[key]*5}
             dic_list.append(tmp_dic)
     print(dic_list)
     return dic_list

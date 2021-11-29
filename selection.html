@@ -115,9 +115,13 @@
             var region_val = document.getElementById("region_s").value;
             document.getElementById('submit_btn').innerHTML="<a href='visualization.html?method=region&region="+region_val+"'><input type='submit' value='Submit'class='btn'></a>";
         }
-        function changeFunc_rating() {
-            var input_val = document.getElementById("user_input").value;
-            document.getElementById('submit_btn').innerHTML="<a href='visualization.html?method=rating&input="+input_val+"'><input type='submit' value='Submit'class='btn'></a>";
+        function changeFunc_bookname() {
+            var input_val = document.getElementById("bookname").value;
+            document.getElementById('submit_btn').innerHTML="<a href='visualization.html?method=book&bookname="+input_val+"'><input type='submit' value='Submit'class='btn'></a>";
+        }
+        function changeFunc_twitter() {
+            var input_val = document.getElementById("keyword").value;
+            document.getElementById('submit_btn').innerHTML="<a href='visualization.html?method=twitter&keyword="+input_val+"'><input type='submit' value='Submit'class='btn'></a>";
         }
         if(method=="age"){
             document.getElementById('selection_title').innerHTML = "What's your age group ?";
@@ -138,10 +142,16 @@
             //add and modify categories here
             document.getElementById('selection').innerHTML = "<a href='visualization.html?method=category&category=category1' class='btn'>category1</a><br><a href='visualization.html?method=category&category=category2' class='btn'>category2</a><br><a href='visualization.html?method=category&category=category3' class='btn'>category3</a>";
         }
-        else if(method=="rating"){
-            document.getElementById('selection_title').innerHTML = "Enter your user ID:";
+        else if(method=="book"){
+            document.getElementById('selection_title').innerHTML = "Enter your favorite book:";
             //modify user's input here
-            document.getElementById('selection').innerHTML = "<input type='text' id='user_input' onchange='changeFunc_rating();'>";//id="name" name="fname"
+            document.getElementById('selection').innerHTML = "<input type='text' id='bookname' onchange='changeFunc_bookname();'>";//id="name" name="fname"
+            changeFunc_rating();
+        }
+        else if(method=="twitter"){
+            document.getElementById('selection_title').innerHTML = "Enter a keyword:";
+            //modify user's input here
+            document.getElementById('selection').innerHTML = "<input type='text' id='keyword' onchange='changeFunc_keyword();'>";//id="name" name="fname"
             changeFunc_rating();
         }
         

@@ -21,7 +21,7 @@
             flex: 70%;
             padding: 15px;
             margin: 20px;
-            height: 500px;
+            height: 40vw;
             font-family: American Typewriter;
             font-size: 20px;
         }
@@ -29,7 +29,7 @@
             flex: 30%;
             padding: 15px;
             margin: 20px;
-            height: 500px;
+            height: 47rem;
             font-family: American Typewriter;
             font-size: 20px;
         }
@@ -119,7 +119,7 @@
             var region = params.get("region");
 
             // Define margin and dimensions for svg
-            var	margin = {top: 15, right: 200, bottom: 15, left: 100};
+            var	margin = {top: -40, right: 200, bottom: 0, left: 100};
             var ww = 1400;
             var hh = 700;
             var w = ww - margin.left - margin.right;
@@ -127,12 +127,22 @@
             var book;
 
             // Create svg
-            var showFiveBooksDiv = d3.select(".column_right");
+            var showFiveBooksDiv = d3.select(".column_right")
+              .append('div')
+              .append('p')
+              .text("Guess you like...");
+
+            // d3.select(".column_left")
+            //   .append('div')
+            //   .append('p')
+            //   .text("See what other country's people like");
 
             var svg = d3.select(".column_left")
               .append("svg")
               .attr("preserveAspectRatio", "xMinYMin meet")
-              .style("background-color","#c9e8fd")
+              .style("background-color", "#5d757e")
+              .style("padding", 0)
+              .style("margin", -15)
               .attr("viewBox", "0 0 " + w + " " + h)
               .classed("svg-content", true);
 
@@ -140,10 +150,10 @@
               .attr('id', 'countries');
 
             // Define projection & path required for world map
-            var projection = d3.geoMercator()
+            var projection = d3.geoNaturalEarth1()
               .translate([w/2, h/2])
-              .scale(150)
-              .center([0, 40]);
+              .scale(215)
+              .center([15, 0]);
 
             var path = d3.geoPath()
               .projection(projection);
@@ -211,16 +221,17 @@
                 .append("path")
                 .attr("class", "countries")
                 .attr("d", path)
+                .attr("stroke", "#a09daf")
                 .attr('fill', function(d) {
                   var countryName = d.properties.name.toLowerCase();
                   if (countryName === region.toLowerCase())
-                    return 'orange';
-                  return 'grey'; 
+                    return '#ace8e1';
+                  return '#2E3E3C'; 
                 })
                 .on('mouseover', function(d) {
                   // Change color of a country
                   d3.select(this)
-                    .attr('fill', 'yellow');
+                    .attr('fill', '#61716f');
 
                   // Everytime mouseover, recreate a tooltip
                   var countryName = d.properties.name;
@@ -263,10 +274,10 @@
                   var countryName = d.properties.name.toLowerCase();
                   if (countryName === region.toLowerCase())
                     d3.select(this)
-                      .attr('fill', 'orange');
+                      .attr('fill', '#ace8e1');
                   else {
                     d3.select(this)
-                      .attr('fill', 'grey');
+                      .attr('fill', '#2E3E3C');
                   }
                   // Everytime mouseout, delete tooltip 
                   d3.select('#tooltip').remove();

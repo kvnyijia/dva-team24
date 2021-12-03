@@ -246,9 +246,20 @@
             //console.log(myWords)
             document.getElementById('book_info').innerHTML = "Loading...";
             async function run() {
-                let myWords= await eel.twitter_test(keyword)(); 
+                let results= await eel.twitter_wordcnt(keyword)();
+                bookname=results[0]
+                bookisbn=results[1]
+                bookimg=results[2]
+                myWords=results[3]
                 console.log(myWords);
-                document.getElementById('book_info').innerHTML = "Got something from Python ";
+                document.getElementById('book_info').innerHTML = "";
+                var showBooks = d3.select(".column_right");
+                showBooks.append('div')
+                  .append('img')
+                  .attr("src", bookimg);
+                showBooks.append('text')
+                  .html('Book Name: ' + bookname+ '</br>' +
+                        'ISBN: ' + bookisbn + '</br>');
                 layout.size([width, height])
                     .words(myWords.map(function(d) { return {text: d.word, size:d.size}; }))
                     .padding(12)        //space between words

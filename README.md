@@ -38,8 +38,9 @@ flask/
 twint/
     recommendation.py
     web/
-        data/
+        data/ --> Preprocessed_data.csv
         lib/
+        icon/
         welcome.html
         visualization.html
         selection.html

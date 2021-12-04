@@ -8,29 +8,27 @@
     ```
 
 ## 2. install twint
-    https://github.com/twintproject/twint/issues/1297
-    ```
     git clone --depth=1 https://github.com/twintproject/twint.git
     cd twint
     pip3 install . -r requirements.txt
     pip3 install twint
-    ```
-
+    
+Source: https://github.com/twintproject/twint/issues/1297
+//put recommendation.py under the /twint
 //create a file named "web" in the twint file
+//put data, lib, icon and html files in the web directory
 
 ## 3. install eel
-    https://github.com/ChrisKnott/Eel
-    ```
     pip install eel
-    ```
-
+    
+Source: https://github.com/ChrisKnott/Eel
 
 ## 4. execute
-    ```
     python recommendation.py
-    ```
-    error: "[IMPORTERROR] cannot import name 'CeilTimeout' from 'aiohttp.helpers'"
-    solution: pip install aiohttp==3.7.0
+    
+Error MSG: "[IMPORTERROR] cannot import name 'CeilTimeout' from 'aiohttp.helpers'"
+Solution: pip install aiohttp==3.7.0 //in the flask
+//run in the twint directory
 
 ## Directory Structure
 ```

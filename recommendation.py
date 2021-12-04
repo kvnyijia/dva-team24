@@ -20,8 +20,7 @@ def item_item_cf(bookname):
 
 @eel.expose  
 def comprehensive_cf(bookname):
-    
-
+   
     bookname = str(bookname)
     if bookname in df['book_title'].values:
     
@@ -29,8 +28,7 @@ def comprehensive_cf(bookname):
         rare_books = book_counts[book_counts['book_title'] <= 150].index
         comm_books = df[~df['book_title'].isin(rare_books)]
         
-        if bookname in rare_books:
-            
+        if bookname in rare_books:     
             print('There is no recommendation for this book: '+ bookname +'.')
             print(' ')
             print('Please try another book.')
@@ -131,8 +129,7 @@ def comprehensive_cf(bookname):
             fig, axs = plt.subplots(1, 5,figsize=(18,5))
             fig.suptitle('Recommended books for "' + bookname+'" \n', size=22)
             
-            for i in range(len(recommendations)):
-        
+            for i in range(len(recommendations))       
                 url = df.loc[df['book_title'] == recommendations[i],'img_l'][:1].values[0]
                 img = Image.open(requests.get(url, stream=True).raw)
                 
@@ -143,7 +140,6 @@ def comprehensive_cf(bookname):
                 title=str(recommendations[i])
                 
                 axs[i].set_title("\n".join(textwrap.wrap(title,25))+ '\n\n Rating: {}'.format(round(df[df['book_title'] == recommendations[i]]['rating'].mean(),1)), y=-0.45,pad=-15,fontsize=15)
-
                 fig.show()
 
     else:

@@ -21,7 +21,7 @@
             flex: 70%;
             padding: 15px;
             margin: 20px;
-            height: 40vw;
+            height: 500px;
             font-family: American Typewriter;
             font-size: 20px;
         }
@@ -29,84 +29,38 @@
             flex: 30%;
             padding: 15px;
             margin: 20px;
-            height: 47rem;
+            height: 500px;
             font-family: American Typewriter;
             font-size: 20px;
         }
-        .rate {
-            float: left;
-            height: 46px;
-            padding: 0 10px;
-        }
-        .rate:not(:checked) > input {
-            position:absolute;
-            top:-9999px;
-        }
-        .rate:not(:checked) > label {
-            float:right;
-            width:1em;
-            overflow:hidden;
-            white-space:nowrap;
-            cursor:pointer;
-            font-size:30px;
-            color:#ccc;
-        }
-        .rate:not(:checked) > label:before {
-            content: '★ ';
-        }
-        .rate > input:checked ~ label {
-            color: #ffc700;    
-        }
-        .rate:not(:checked) > label:hover,
-        .rate:not(:checked) > label:hover ~ label {
-            color: #deb217;  
-        }
-        .rate > input:checked + label:hover,
-        .rate > input:checked + label:hover ~ label,
-        .rate > input:checked ~ label:hover,
-        .rate > input:checked ~ label:hover ~ label,
-        .rate > label:hover ~ input:checked ~ label {
-            color: #c59b08;
+        .category{
+          width: 100%;
+          text-align: center;
         }
     </style>
 </head>
 <body style ="background: #faf1cd">
-    <div style="font-family: American Typewriter; font-size: 40px; text-align: left; margin: 15px;">
-      Recommendation Result:
-      <span style="text-align: right;">
-        <a href='welcome.html'><img src="icon/home.png" alt="Home" width="50" height="50"></a>
-      </span>
-    </div>
+        <p style="font-family: American Typewriter; font-size: 40px; text-align: left; margin: 15px;">Recommendation Result:</p>
     <div class="recommendation">
+        <div class="category">
+        <label>Select Category: </label>
+        <select id="categoryDropdown"></select>
+        <div class="book" id="book"></div>
+        </div>
+
         <div class="row">
             <!--Put visualization in this div-->
             <div class="column_left" style="background-color:white;" id="data_vis"></div>
             <!--Put book's information in this div-->
             <div class="column_right" id="book_info"></div>
+            
+
+
+
+
         </div>
     </div>
-    <table>
-      <tr>
-        <td style="font-family: American Typewriter; font-size: 15px; margin: 5px;">Rate this recommendation:</td>
-        <td class="rate">
-          <input type="radio" id="star5" name="rate" value="5" />
-          <label for="star5" title="text">5 stars</label>
-          <input type="radio" id="star4" name="rate" value="4" />
-          <label for="star4" title="text">4 stars</label>
-          <input type="radio" id="star3" name="rate" value="3" />
-          <label for="star3" title="text">3 stars</label>
-          <input type="radio" id="star2" name="rate" value="2" />
-          <label for="star2" title="text">2 stars</label>
-          <input type="radio" id="star1" name="rate" value="1" />
-          <label for="star1" title="text">1 star</label>
-        </td>
-        <td style="font-family: American Typewriter; font-size: 15px; margin: 10px;">Comments: </td>
-        <td>
-          <input type='text' id='comment'>
-          <input id="submit" type="submit" class="btn" onclick="submit();">
-        </td>
-      </tr>
-    </table>
+
     <script>
         const params = new URLSearchParams(window.location.search)
         var method = params.get("method");
@@ -119,7 +73,7 @@
             var region = params.get("region");
 
             // Define margin and dimensions for svg
-            var	margin = {top: -40, right: 200, bottom: 0, left: 100};
+            var	margin = {top: 15, right: 200, bottom: 15, left: 100};
             var ww = 1400;
             var hh = 700;
             var w = ww - margin.left - margin.right;
@@ -127,22 +81,12 @@
             var book;
 
             // Create svg
-            var showFiveBooksDiv = d3.select(".column_right")
-              .append('div')
-              .append('p')
-              .text("Guess you like...");
-
-            // d3.select(".column_left")
-            //   .append('div')
-            //   .append('p')
-            //   .text("See what other country's people like");
+            var showFiveBooksDiv = d3.select(".column_right");
 
             var svg = d3.select(".column_left")
               .append("svg")
               .attr("preserveAspectRatio", "xMinYMin meet")
-              .style("background-color", "#5d757e")
-              .style("padding", 0)
-              .style("margin", -15)
+              .style("background-color","#c9e8fd")
               .attr("viewBox", "0 0 " + w + " " + h)
               .classed("svg-content", true);
 
@@ -150,10 +94,10 @@
               .attr('id', 'countries');
 
             // Define projection & path required for world map
-            var projection = d3.geoNaturalEarth1()
+            var projection = d3.geoMercator()
               .translate([w/2, h/2])
-              .scale(215)
-              .center([15, 0]);
+              .scale(150)
+              .center([0, 40]);
 
             var path = d3.geoPath()
               .projection(projection);
@@ -221,17 +165,16 @@
                 .append("path")
                 .attr("class", "countries")
                 .attr("d", path)
-                .attr("stroke", "#a09daf")
                 .attr('fill', function(d) {
                   var countryName = d.properties.name.toLowerCase();
                   if (countryName === region.toLowerCase())
-                    return '#ace8e1';
-                  return '#2E3E3C'; 
+                    return 'orange';
+                  return 'grey'; 
                 })
                 .on('mouseover', function(d) {
                   // Change color of a country
                   d3.select(this)
-                    .attr('fill', '#61716f');
+                    .attr('fill', 'yellow');
 
                   // Everytime mouseover, recreate a tooltip
                   var countryName = d.properties.name;
@@ -274,10 +217,10 @@
                   var countryName = d.properties.name.toLowerCase();
                   if (countryName === region.toLowerCase())
                     d3.select(this)
-                      .attr('fill', '#ace8e1');
+                      .attr('fill', 'orange');
                   else {
                     d3.select(this)
-                      .attr('fill', '#2E3E3C');
+                      .attr('fill', 'grey');
                   }
                   // Everytime mouseout, delete tooltip 
                   d3.select('#tooltip').remove();
@@ -296,7 +239,103 @@
         else if(method=="category"){
             //category recommendation and visualization
             var category = params.get("category");
-            
+            var	margin = {top: 100, right: 200, bottom: 50, left: 100};
+            var ww = 1600;
+            var hh = 800;
+            var w = ww - margin.left - margin.right;
+            var h = hh - margin.top - margin.bottom;
+
+            // enter code to create svg
+            var showFiveBooksDiv = d3.select(".book")
+              
+            var bookCategoryWeight = d3.csv('data/category_score_sort.csv');
+
+            Promise.all([
+                // enter code to read files
+                bookCategoryWeight
+              ])
+              .then(function(data) {
+
+                ready(0, data[0]);
+              });
+
+            function ready(error, book) {
+              // enter code to extract all unique categories
+              var selectedCategory = category;
+
+              console.log(book);
+
+              var cnt = 0;
+              var fiveBooks = [];
+              for (var i = 0; i < book.length; ++i) {
+                if (book[i]['Category'] == selectedCategory) {
+                  fiveBooks.push(book[i]);
+                  cnt = cnt + 1;
+                  if (cnt >= 5) break;
+                }
+              }
+              console.log(fiveBooks);
+
+              var unique_categories= [...new Set(book.map(item => item.Category))];
+                        unique_categories=unique_categories.sort()
+
+              var drop_down_option= d3.select("#categoryDropdown")
+              .selectAll("option")
+              .data(unique_categories)
+              .enter()
+              .append("option")
+              .attr("value", function(d) {return d;})
+              .append("text")
+              .text(function(d) {return d;})
+              .property("selected", function(d) {
+                  return selectedCategory
+              });
+              // enter code to append the game options to the dropdown
+              d3.select("#categoryDropdown")
+                          .on("change", change);
+              function change(d) {
+                selectedCategory = d3.select(this).property("value");
+              
+              showFiveBooksDiv.selectAll("img").remove();
+              showFiveBooksDiv.selectAll("text").remove();
+              
+              var cnt = 0;
+              var fiveBooks = [];
+              for (var i = 0; i < book.length; ++i) {
+                if (book[i]['Category'] == selectedCategory) {
+                  fiveBooks.push(book[i]);
+                  cnt = cnt + 1;
+                  if (cnt >= 5) break;
+                }
+              }
+
+                  createMapAndLegend(fiveBooks, selectedCategory)
+              };
+              // event listener for the dropdown. Update choropleth and legend when selection changes. Call createMapAndLegend() with required arguments.
+              
+              // create Choropleth with default option. Call createMapAndLegend() with required arguments. 
+              createMapAndLegend(fiveBooks, selectedCategory);
+            }
+
+            // this function should create a Choropleth and legend using the world and gameData arguments for a selectedGame
+            // also use this function to update Choropleth and legend when a different game is selected from the dropdown
+            function createMapAndLegend(fiveBooks, selectedCategory) { 
+
+                showFiveBooksDiv.selectAll("img")
+                  .data(fiveBooks)
+                  .enter()
+                  .append('img')
+                  .attr("src", function(d, i) { return fiveBooks[i]['img_l'] });
+                
+                showFiveBooksDiv.selectAll('text')
+                  .data(fiveBooks)
+                  .enter()
+                  .append('text')
+                  .html(function(d, i) { 
+                    return '</br>'+ 'Book Name: ' + fiveBooks[i]['book_title'] + ', ' +
+                          'ISBN: ' + fiveBooks[i]['isbn'] + '</br>';  });           
+            }
+                        
         }
         else if(method=="book"){
             //rating recommendation and visualization
@@ -318,20 +357,9 @@
             //console.log(myWords)
             document.getElementById('book_info').innerHTML = "Loading...";
             async function run() {
-                let results= await eel.twitter_wordcnt(keyword)();
-                bookname=results[0]
-                bookisbn=results[1]
-                bookimg=results[2]
-                myWords=results[3]
+                let myWords= await eel.twitter_test(keyword)(); 
                 console.log(myWords);
-                document.getElementById('book_info').innerHTML = "";
-                var showBooks = d3.select(".column_right");
-                showBooks.append('div')
-                  .append('img')
-                  .attr("src", bookimg);
-                showBooks.append('text')
-                  .html('Book Name: ' + bookname+ '</br>' +
-                        'ISBN: ' + bookisbn + '</br>');
+                document.getElementById('book_info').innerHTML = "Got something from Python ";
                 layout.size([width, height])
                     .words(myWords.map(function(d) { return {text: d.word, size:d.size}; }))
                     .padding(12)        //space between words

@@ -133,7 +133,7 @@ def comprehensive_cf(bookname):
             fig, axs = plt.subplots(1, 5,figsize=(18,5))
             fig.suptitle('Recommended books for "' + bookname+'" \n', size=22)
             
-            for i in range(len(recommendations))      
+            for i in range(len(recommendations)):      
                 url = df.loc[df['book_title'] == recommendations[i],'img_l'][:1].values[0]
                 img = Image.open(requests.get(url, stream=True).raw)
                 

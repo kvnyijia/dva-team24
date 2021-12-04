@@ -21,7 +21,7 @@
             flex: 70%;
             padding: 15px;
             margin: 20px;
-            height: 500px;
+            height: 40vw;
             font-family: American Typewriter;
             font-size: 20px;
         }
@@ -29,7 +29,7 @@
             flex: 30%;
             padding: 15px;
             margin: 20px;
-            height: 500px;
+            height: 40vw;
             font-family: American Typewriter;
             font-size: 20px;
         }
@@ -82,15 +82,16 @@
       </span>
     </div>
     <div class="recommendation">
-        <div class="category">
-        <label>Select Category: </label>
-        <select id="categoryDropdown"></select>
-        <div class="book" id="book"></div>
+        <!-- <div id=""></div> -->
+        <div class="category_div" id="category_div">
+          <!-- <label>Select Category: </label> -->
+          <!-- <select id="categoryDropdown"></select> -->
+          <!-- <div class="book" id="book"></div> -->
         </div>
 
         <div class="row">
             <!--Put visualization in this div-->
-            <div class="column_left" style="background-color:white;" id="data_vis"></div>
+            <div class="column_left"  id="data_vis"></div>
             <!--Put book's information in this div-->
             <div class="column_right" id="book_info"></div>
         </div>
@@ -129,7 +130,7 @@
             var region = params.get("region");
 
             // Define margin and dimensions for svg
-            var	margin = {top: -40, right: 200, bottom: 0, left: 100};
+            var	margin = {top: -40, right: 200, bottom: 30, left: 100};
             var ww = 1400;
             var hh = 700;
             var w = ww - margin.left - margin.right;
@@ -306,32 +307,21 @@
         else if(method=="category"){
             //category recommendation and visualization
             var category = params.get("category");
-            var	margin = {top: 100, right: 200, bottom: 50, left: 100};
-            var ww = 1600;
-            var hh = 800;
-            var w = ww - margin.left - margin.right;
-            var h = hh - margin.top - margin.bottom;
+            var catDiv = d3.select('.category_div');
+            var selectTag = catDiv.append('select');
+            var showFiveBooksDiv = catDiv.append('div')
+              .attr('class', "book")
+              .attr('id', "book");
 
-            // enter code to create svg
-            var showFiveBooksDiv = d3.select(".book")
-              
-            var bookCategoryWeight = d3.csv('data/category_score_sort.csv');
 
-            Promise.all([
-                // enter code to read files
-                bookCategoryWeight
-              ])
-              .then(function(data) {
-
-                ready(0, data[0]);
-              });
-
-            function ready(error, book) {
-              // enter code to extract all unique categories
+            d3.dsv(",", "data/category_score_sort.csv", function(d) {
+              // console.log(d);
+              return d;
+            })
+            .then(function(book) {
+              // console.log(book);
+            
               var selectedCategory = category;
-
-              console.log(book);
-
               var cnt = 0;
               var fiveBooks = [];
               for (var i = 0; i < book.length; ++i) {
@@ -341,53 +331,45 @@
                   if (cnt >= 5) break;
                 }
               }
+              console.log(selectedCategory);
               console.log(fiveBooks);
 
               var unique_categories= [...new Set(book.map(item => item.Category))];
-                        unique_categories=unique_categories.sort()
+              unique_categories = unique_categories.sort()
 
-              var drop_down_option= d3.select("#categoryDropdown")
-              .selectAll("option")
-              .data(unique_categories)
-              .enter()
-              .append("option")
-              .attr("value", function(d) {return d;})
-              .append("text")
-              .text(function(d) {return d;})
-              .property("selected", function(d) {
-                  return selectedCategory
-              });
-              // enter code to append the game options to the dropdown
-              d3.select("#categoryDropdown")
-                          .on("change", change);
-              function change(d) {
-                selectedCategory = d3.select(this).property("value");
+              // Append options
+              selectTag.selectAll("option")
+                .data(unique_categories)
+                .enter()
+                .append("option")
+                .attr("value", function(d) { return d; })
+                .append("text")
+                .text(function(d) {return d;})
+                .property("selected", function(d) {
+                    return d === selectedCategory;
+                });
               
-              showFiveBooksDiv.selectAll("img").remove();
-              showFiveBooksDiv.selectAll("text").remove();
-              
-              var cnt = 0;
-              var fiveBooks = [];
-              for (var i = 0; i < book.length; ++i) {
-                if (book[i]['Category'] == selectedCategory) {
-                  fiveBooks.push(book[i]);
-                  cnt = cnt + 1;
-                  if (cnt >= 5) break;
-                }
-              }
-
+              selectTag.on("change", function(d) {
+                  selectedCategory = d3.select(this).property("value");
+                
+                  showFiveBooksDiv.selectAll("img").remove();
+                  showFiveBooksDiv.selectAll("text").remove();
+                  
+                  var cnt = 0;
+                  fiveBooks = [];
+                  for (var i = 0; i < book.length; ++i) {
+                    if (book[i]['Category'] == selectedCategory) {
+                      fiveBooks.push(book[i]);
+                      cnt = cnt + 1;
+                      if (cnt >= 5) break;
+                    }
+                  }
                   createMapAndLegend(fiveBooks, selectedCategory)
-              };
-              // event listener for the dropdown. Update choropleth and legend when selection changes. Call createMapAndLegend() with required arguments.
-              
-              // create Choropleth with default option. Call createMapAndLegend() with required arguments. 
+              });
+
               createMapAndLegend(fiveBooks, selectedCategory);
-            }
 
-            // this function should create a Choropleth and legend using the world and gameData arguments for a selectedGame
-            // also use this function to update Choropleth and legend when a different game is selected from the dropdown
-            function createMapAndLegend(fiveBooks, selectedCategory) { 
-
+              function createMapAndLegend(fiveBooks, selectedCategory) { 
                 showFiveBooksDiv.selectAll("img")
                   .data(fiveBooks)
                   .enter()
@@ -400,9 +382,10 @@
                   .append('text')
                   .html(function(d, i) { 
                     return '</br>'+ 'Book Name: ' + fiveBooks[i]['book_title'] + ', ' +
-                          'ISBN: ' + fiveBooks[i]['isbn'] + '</br>';  });           
-            }
-                        
+                          'ISBN: ' + fiveBooks[i]['isbn'] + '</br>';  
+                  });           
+              }
+          }); // end of then  
         }
         else if(method=="book"){
             //rating recommendation and visualization

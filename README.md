@@ -34,16 +34,15 @@ Solution: pip install aiohttp==3.7.0 //in the flask
 //run in the twint directory
 
 ## Directory Structure
-'''
-flask/
-twint/
-    recommendation.py
-    web/
-        data/ --> Preprocessed_data.csv
-        lib/
-        icon/
-        welcome.html
-        visualization.html
-        selection.html
-'''
+    flask/
+    twint/
+        recommendation.py
+        web/
+            data/ --> Preprocessed_data.csv
+            lib/
+            icon/
+            welcome.html
+            visualization.html
+            selection.html
+
 

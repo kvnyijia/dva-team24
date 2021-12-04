@@ -34,7 +34,7 @@ Solution: pip install aiohttp==3.7.0 //in the flask
 //run in the twint directory
 
 ## Directory Structure
-
+'''
 flask/
 twint/
     recommendation.py
@@ -45,4 +45,5 @@ twint/
         welcome.html
         visualization.html
         selection.html
+'''
 

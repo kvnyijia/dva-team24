@@ -20,7 +20,8 @@ def item_item_cf(bookname):
 
 @eel.expose  
 def comprehensive_cf(bookname):
- 
+    
+
     bookname = str(bookname)
     if bookname in df['book_title'].values:
     
@@ -28,9 +29,9 @@ def comprehensive_cf(bookname):
         rare_books = book_counts[book_counts['book_title'] <= 150].index
         comm_books = df[~df['book_title'].isin(rare_books)]
         
-        if book_title in rare_books:
+        if bookname in rare_books:
             
-            print('There is no recommendation for this book: '+ book_title +'.')
+            print('There is no recommendation for this book: '+ bookname +'.')
             print(' ')
             print('Please try another book.')
         
@@ -128,7 +129,7 @@ def comprehensive_cf(bookname):
             df_new = df_new[~df_new['book_title'].isin(recommendations)]
                 
             fig, axs = plt.subplots(1, 5,figsize=(18,5))
-            fig.suptitle('Recommended books for "' + book_title+'" \n', size=22)
+            fig.suptitle('Recommended books for "' + bookname+'" \n', size=22)
             
             for i in range(len(recommendations)):
         
@@ -147,6 +148,7 @@ def comprehensive_cf(bookname):
 
     else:
         print('This book is not in the dataset, please check the book title.')
+        
     return 0
    
 

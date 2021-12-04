@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <title>Book Recommendation</title>
-    <script type="text/javascript" src="/eel.js"></script>
     <style> 
         .recommendation {
             margin-top: 150px;
@@ -99,7 +98,6 @@
     </style>
 </head>
 <body style ="background: #faf1cd">
-    <a href='welcome.html'><img src="icon/home.png" alt="Home" width="50" height="50"></a>
     <div class="recommendation">
         <p style="font-family: American Typewriter; font-size: 30px;" id="selection_title"></p>
         <p id="selection" style="text-align: center; width:200px; margin: auto;"></p>
@@ -116,6 +114,10 @@
         function changeFunc_region() {
             var region_val = document.getElementById("region_s").value;
             document.getElementById('submit_btn').innerHTML="<a href='visualization.html?method=region&region="+region_val+"'><input type='submit' value='Submit'class='btn'></a>";
+        }
+        function changeFunc_category() {
+            var category_val = document.getElementById("category_s").value;
+            document.getElementById('submit_btn').innerHTML="<a href='visualization.html?method=category&category="+category_val+"'><input type='submit' value='Submit'class='btn'></a>";
         }
         function changeFunc_bookname() {
             var input_val = document.getElementById("bookname").value;
@@ -327,8 +329,59 @@
         }
         else if(method=="category"){
             document.getElementById('selection_title').innerHTML = "Select a category";
+            document.getElementById('selection').className = "select";
             //add and modify categories here
-            document.getElementById('selection').innerHTML = "<a href='visualization.html?method=category&category=category1' class='btn'>category1</a><br><a href='visualization.html?method=category&category=category2' class='btn'>category2</a><br><a href='visualization.html?method=category&category=category3' class='btn'>category3</a>";
+            document.getElementById('selection').innerHTML = "<select id='category_s' onchange='changeFunc_category();'></select><br>";
+            var categorySelect = document.getElementById('category_s');
+            cList = [
+                '9',
+                '["ABC\'s"]',
+                '["Aesop\'s fables"]',
+                '["Almanacs, Children\'s"]',
+                '["Alzheimer\'s disease"]',
+                '["AmÃ©ricains d\'origine europÃ©enne - GÃ©nÃ©alogies - Guides, manuels, etc"]',
+                '["April Fools\' Day"]',
+                '["Arthur Miller\'s The Crucible"]',
+                '["Artists\' books"]',
+                '["Artists\' contracts"]',
+                '["Artists\' models"]',
+                '["Artists\' representatives"]',
+                '["Artists\' spouses"]',
+                '["Artists\' studios"]',
+                '["At a desolate monastery off the coast of Wales, the pilgrims vanish one by one ... This mesmerizing tale is woven around two characters: Vane, an emissary sent by the bishop to investigate the disappearance of a number of pilgrims on their way to the island\'s miraculous well"]',
+                '["Author\'s spouses"]',
+                '["Authors\' spouses"]',
+                '["Bisexuals\' writings"]',
+                '["Blake\'s 7 (Television program)"]',
+                '["Blue\'s clues (Television program)"]',
+                '["Bram Stoker\'s Dracula (Motion picture)"]',
+                '["Buffalo Bill\'s Wild West Show"]',
+                '["Bug\'s life (Motion picture)"]',
+                '["Canadiens d\'origine roumaine - Saskatchewan - Dysert - Biographies"]',
+                '["Chefs d\'orchestre - Ã\x89tats-Unis - Biographies"]',
+                '["Children\'s accidents"]',
+                '["Children\'s art"]',
+                '["Children\'s atlases"]',
+                '["Children\'s audiobooks"]',
+                '["Children\'s books"]',
+                '["Children\'s clothing."]',
+                '["Children\'s costumes"]',
+                '["Children\'s detective and mystery stories"]',
+                '["Children\'s dreams"]',
+                '["Children\'s encyclopedias and dictionaries"]',
+                '["Children\'s fantasy fiction"]',
+                '["Children\'s fiction"]',
+                '["Children\'s films"]',
+            ]
+            for (var i = 0; i < cList.length; i++) {
+                var opt = document.createElement('option');
+                opt.value = cList[i];
+                opt.innerHTML = cList[i];
+                categorySelect.appendChild(opt);
+            }
+            changeFunc_category()
+
+        
         }
         else if(method=="book"){
             document.getElementById('selection_title').innerHTML = "Enter your favorite book:";

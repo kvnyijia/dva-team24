@@ -5,6 +5,10 @@ import re
 import nltk
 from numpy import number
 import pandas as pd
+import requests
+import numpy as np
+import matplotlib.pyplot as plt
+import textwrap
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from nltk.corpus import stopwords

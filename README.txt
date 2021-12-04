@@ -14,6 +14,9 @@
 2. INSTALLATION
     (1) <Download Dataset>
         https://www.kaggle.com/ruchi798/bookcrossing-dataset
+        ***
+        put "Preprocessed_data.csv" under web/data/
+        ***
 
     (2) <Install Flask>
         pip3 install flask
@@ -21,13 +24,18 @@
         cd flask
         source bin/activate
 
-    (3) <Install Twint>
+    (3) <Install Twint> Source: https://github.com/twintproject/twint
         git clone --depth=1 https://github.com/twintproject/twint.git
         cd twint
         pip3 install . -r requirements.txt
         pip3 install twint
+        
+        ***
+        put recommendation.py under the twint directory
+        put web files under the twint directory
+        ***
 
-    (4) <install eel>
+    (4) <install eel> Source: https://github.com/ChrisKnott/Eel
         pip install eel
     
 3. EXECUTION

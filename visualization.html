@@ -566,7 +566,7 @@
 
                 showFiveBooksDiv.append('text')
                     .html('Book Name: ' + fiveBooks[0]['book_title'] + '</br>' +
-                        'ISBN: ' + fiveBooks[0]['isbn'] + '</br>');
+                          'ISBN: ' + fiveBooks[0]['isbn'] + '</br>');
             } // end of createMapAndLegend()
         }
         else if (method == "category") {
@@ -617,8 +617,8 @@
                     selectTag.on("change", function (d) {
                         selectedCategory = d3.select(this).property("value");
 
-                        showFiveBooksDiv.selectAll("img").remove();
-                        showFiveBooksDiv.selectAll("text").remove();
+                        d3.select('.column_right').selectAll("img").remove();
+                        d3.select('.column_right').selectAll("text").remove();
 
                         var cnt = 0;
                         fiveBooks = [];
@@ -635,22 +635,87 @@
                     createMapAndLegend(fiveBooks, selectedCategory);
 
                     function createMapAndLegend(fiveBooks, selectedCategory) {
-                        showFiveBooksDiv.selectAll("img")
-                            .data(fiveBooks)
-                            .enter()
-                            .append('img')
-                            .attr("src", function (d, i) { return fiveBooks[i]['img_l'] });
+                        // showFiveBooksDiv.selectAll("img")
+                        //     .data(fiveBooks)
+                        //     .enter()
+                        //     .append('img')
+                        //     .attr("src", function (d, i) { return fiveBooks[i]['img_l'] });
 
-                        showFiveBooksDiv.selectAll('text')
-                            .data(fiveBooks)
-                            .enter()
-                            .append('text')
-                            .html(function (d, i) {
-                                return '</br>' + 'Book Name: ' + fiveBooks[i]['book_title'] + ', ' +
-                                    'ISBN: ' + fiveBooks[i]['isbn'] + '</br>';
-                            });
+                        // showFiveBooksDiv.selectAll('text')
+                        //     .data(fiveBooks)
+                        //     .enter()
+                        //     .append('text')
+                        //     .html(function (d, i) {
+                        //         return '</br>' + 'Book Name: ' + fiveBooks[i]['book_title'] + ', ' +
+                        //             'ISBN: ' + fiveBooks[i]['isbn'] + '</br>';
+                        //     });
+                        d3.select('.column_right').append('div')
+                          .append('img')
+                          .attr("src", fiveBooks[0]['img_l']);
+
+                        d3.select('.column_right').append('text')
+                          .html('Book Name: ' + fiveBooks[0]['book_title'] + '</br>' +
+                                'ISBN: ' + fiveBooks[0]['isbn'] + '</br>');
                     }
-                }); // end of then  
+            }); // end of then
+            
+            // Bar chart for category
+            // Set the dimensions and margins of the graph
+            var margin = {top: 0, right: 0, bottom: 250, left: 40},
+                width = 815 - margin.left - margin.right,
+                height = 500 - margin.top - margin.bottom;
+
+            // Set the ranges
+            var x = d3.scaleBand()
+              .range([0, width])
+              .padding(0.1);
+            var y = d3.scaleLinear()
+              .range([height, 0]);
+            
+            var svg = d3.select(".column_left")
+              .append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+              .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");  // moves the 'group' element to the top left margin
+
+            // Load the data
+            d3.csv("data/cat_count_sort.csv").then(function(data) {
+              // Format the data
+              data.forEach(function(d) {
+                d.count = +d.count;
+                d.log_count = +d.log_count;
+              });
+
+              // Scale the range of the data in the domains
+              x.domain(data.map(function(d) { return d.Category; }));
+              y.domain([0, d3.max(data, function(d) { return d.log_count; })]);
+
+              // Append the rectangles for the bar chart
+              svg.selectAll(".mybar")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("class", "mybar")
+                .attr("x", function(d) { return x(d.Category); })
+                .attr("width", x.bandwidth())
+                .attr("y", function(d) { return y(d.log_count); })
+                .attr("height", function(d) { return height - y(d.log_count); });
+
+              // Add the x Axis
+              svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x))
+                .selectAll("text")  
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-65)");
+
+              // Add the y Axis
+              svg.append("g")
+                .call(d3.axisLeft(y));
+            }); // end of then
         }
         else if (method == "book") {
             //rating recommendation and visualization
@@ -740,7 +805,7 @@
                     .data(barchart_data)
                     .enter().append("rect")
                     .attr("class", "bar")
-                    .style("fill", "#ffc700")
+                    .attr("fill", "#69b3a2")
                     .attr("x", function (d) { return xScale(d.book); })
                     .attr("y", function (d) { return yScale(d.rating); })
                     .attr("width", xScale.bandwidth())

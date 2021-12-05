@@ -20,6 +20,7 @@
 
     (2) <Preprocess Dataset>
         Run Age_data_merging.ipynb to get "merged_Agedata_final.csv"
+	(Input: BX_Books.csv,BX-Book-Ratings.csv, BX-Users.csv. Filepath in the ipynb need to be defined)
 	***
 	preprocess.py is used to generate "region_score_sort.csv", "cat_count_sort.csv", "cat_score_sort.csv"
 	***

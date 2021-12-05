@@ -4,7 +4,7 @@
     twint/
         recommendation.py
         web/
-            data/ --> "Preprocessed_data.csv" downloaded from Kaggle
+            data/ --> "Preprocessed_data.csv" downloaded from Kaggle / "merged_Agedata_final.csv" from the preprocessing step
             lib/
             icon/
             welcome.html
@@ -18,9 +18,11 @@
         put "Preprocessed_data.csv" under web/data/
         ***
 
-	(2) <Preprocess Dataset>
-        python3 preprocess.py
-        run Age_data_merging.ipynb
+    (2) <Preprocess Dataset>
+        Run Age_data_merging.ipynb to get "merged_Agedata_final.csv"
+	***
+	preprocess.py is used to generate "region_score_sort.csv", "cat_count_sort.csv", "cat_score_sort.csv"
+	***
 
     (3) <Install Flask>
         pip3 install flask

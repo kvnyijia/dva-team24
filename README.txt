@@ -18,14 +18,18 @@
         put "Preprocessed_data.csv" under web/data/
         ***
 
-    (2) <Install Flask>
+	(2) <Preprocess Dataset>
+        python3 preprocess.py
+        run Age_data_merging.ipynb
+
+    (3) <Install Flask>
         pip3 install flask
         pip install virtualenv
         virtualenv flask
         cd flask
         source bin/activate
 
-    (3) <Install Twint> Source: https://github.com/twintproject/twint
+    (4) <Install Twint> Source: https://github.com/twintproject/twint
         git clone --depth=1 https://github.com/twintproject/twint.git
         cd twint
         pip3 install . -r requirements.txt
@@ -36,10 +40,10 @@
         put web files under the twint directory
         ***
 
-    (4) <install eel> Source: https://github.com/ChrisKnott/Eel
+    (5) <install eel> Source: https://github.com/ChrisKnott/Eel
         pip install eel
     
-    (5) <install python package>
+    (6) <install python package>
         pip install nltk
         pip install sklearn
         pip install matplotlib

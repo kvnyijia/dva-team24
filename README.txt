@@ -38,6 +38,11 @@
     (4) <install eel> Source: https://github.com/ChrisKnott/Eel
         pip install eel
     
+    (5) <install python package>
+        pip install nltk
+        pip install sklearn
+        pip install matplotlib
+    
 3. EXECUTION
     Run "python recommendation.py" //under the twint directory
     ***

@@ -24,133 +24,164 @@ def item_item_cf(bookname):
 
 @eel.expose  
 def comprehensive_cf(bookname):
-   
+    books_data = pd.read_csv('web/data/Preprocessed_data.csv')
+    df = books_data.copy()
+    df.dropna(inplace=True)
+    df.reset_index(drop=True, inplace=True)
+
+    df.drop(columns=['Unnamed: 0', 'location', 'isbn',
+                     'img_s', 'img_m', 'city', 'age',
+                     'state', 'Language', 'country',
+                     'year_of_publication'], axis=1, inplace=True)  # remove useless cols
+
+    df.drop(index=df[df['rating'] == 0].index,
+            inplace=True)  # remove 0 in rating
+    df.drop(index=df[df['Category'] == '9'].index,
+            inplace=True)  # remove 9 in category
+
+    df['Category'] = df['Category'].apply(
+        lambda x: re.sub('[\W_]+', ' ', x).strip())
     bookname = str(bookname)
     if bookname in df['book_title'].values:
-    
+
         book_counts = pd.DataFrame(df['book_title'].value_counts())
         rare_books = book_counts[book_counts['book_title'] <= 150].index
         comm_books = df[~df['book_title'].isin(rare_books)]
-        
-        if bookname in rare_books:     
-            print('There is no recommendation for this book: '+ bookname +'.')
+
+        if bookname in rare_books:
+            print('There is no recommendation for this book: ' + bookname + '.')
             print(' ')
             print('Please try another book.')
-        
+
         else:
             # item-based recommendation: choose 1 book
-            comm_books_df = comm_books.pivot_table(index=['user_id'], columns=['book_title'], values='rating')
-        
-            # input book 
+            comm_books_df = comm_books.pivot_table(index=['user_id'], columns=[
+                                                   'book_title'], values='rating')
+
+            # input book
             input_book = comm_books_df[bookname]
-            
+
             # correlation
-            recom_data = pd.DataFrame(comm_books_df.corrwith(input_book). \
+            recom_data = pd.DataFrame(comm_books_df.corrwith(input_book).
                                       sort_values(ascending=False)).reset_index(drop=False)
-            
+
             if bookname in [input_book for input_book in recom_data['book_title']]:
-                recom_data = recom_data.drop(recom_data[recom_data['book_title'] == bookname].index[0])
-                
+                recom_data = recom_data.drop(
+                    recom_data[recom_data['book_title'] == bookname].index[0])
+
             low_rating = []
             for i in recom_data['book_title']:
                 if df[df['book_title'] == i]['rating'].mean() < 10:
                     low_rating.append(i)
-                    
+
             # non low rating > 10
             if recom_data.shape[0] - len(low_rating) > 10:
-                recom_data = recom_data[~recom_data['book_title'].isin(low_rating)]
-            
-            recom_temp1 = recom_data[0:1]    
-            recom_temp1.columns = ['book_title','item_based_corr']
+                recom_data = recom_data[~recom_data['book_title'].isin(
+                    low_rating)]
+
+            recom_temp1 = recom_data[0:1]
+            recom_temp1.columns = ['book_title', 'item_based_corr']
             recommendations = []
             for i in recom_temp1['book_title']:
                 recommendations.append(i)
-                
+
             df_new = df[~df['book_title'].isin(recommendations)]
-            
+
             # content based recommendation (Title, Author, Category): choose 2 books
             book_counts = pd.DataFrame(df_new['book_title'].value_counts())
-        
+
             rare_books = book_counts[book_counts['book_title'] <= 150].index
-    
+
             comm_books = df_new[~df_new['book_title'].isin(rare_books)]
             comm_books = comm_books.drop_duplicates(subset=['book_title'])
-            comm_books.reset_index(inplace= True)
-            comm_books['index'] = [i for i in range(comm_books.shape[0])]   
-            target_content = ['book_title','book_author','Category']
-            comm_books['target_content'] = [' '.join(comm_books[target_content].iloc[i,].values) for i in range(comm_books[target_content].shape[0])]
-            
+            comm_books.reset_index(inplace=True)
+            comm_books['index'] = [i for i in range(comm_books.shape[0])]
+            target_content = ['book_title', 'book_author', 'Category']
+            comm_books['target_content'] = [' '.join(
+                comm_books[target_content].iloc[i, ].values) for i in range(comm_books[target_content].shape[0])]
+
             cv = CountVectorizer()
             target_transform = cv.fit_transform(comm_books['target_content'])
             target_sim = cosine_similarity(target_transform)
-            book_index = comm_books[comm_books['book_title'] == bookname]['index'].values[0]
+            book_index = comm_books[comm_books['book_title']
+                                    == bookname]['index'].values[0]
             sim_books = list(enumerate(target_sim[book_index]))
-            sim_books_top_two = sorted(sim_books,key=lambda x:x[1],reverse=True)[1:3]
-            
+            sim_books_top_two = sorted(
+                sim_books, key=lambda x: x[1], reverse=True)[1:3]
+            sim_books_top_five = sorted(
+                sim_books, key=lambda x: x[1], reverse=True)[1:6]
+
+            predicted_rating = []
+            predicted_book = []
+            for i in range(len(sim_books_top_five)):
+                predicted_rating.append(sim_books_top_five[i][1])
+                predicted_book.append(
+                    comm_books[comm_books['index'] == sim_books_top_five[i][0]]['book_title'].item())
+
             recom_temp2 = []
             for i in range(len(sim_books_top_two)):
-                recom_temp2.append(comm_books[comm_books['index'] == sim_books_top_two[i][0]]['book_title'].item())
-                
+                recom_temp2.append(
+                    comm_books[comm_books['index'] == sim_books_top_two[i][0]]['book_title'].item())
+
             for i in recom_temp2:
                 recommendations.append(i)
-            
+
             df_new = df_new[~df_new['book_title'].isin(recommendations)]
-            
+
             # content based recommendation (summary): choose 2 books
             book_counts = pd.DataFrame(df_new['book_title'].value_counts())
             rare_books = book_counts[book_counts['book_title'] <= 150].index
             comm_books = df_new[~df_new['book_title'].isin(rare_books)]
-            
+
             comm_books = comm_books.drop_duplicates(subset=['book_title'])
-            comm_books.reset_index(inplace= True)
+            comm_books.reset_index(inplace=True)
             comm_books['index'] = [i for i in range(comm_books.shape[0])]
-            
+
             summary_preprocessed = []
             for i in comm_books['Summary']:
-                
-                i = re.sub("[^a-zA-Z]"," ",i).lower()
+
+                i = re.sub("[^a-zA-Z]", " ", i).lower()
                 i = nltk.word_tokenize(i)
-                i = [word for word in i if not word in set(stopwords.words("english"))]
+                i = [word for word in i if not word in set(
+                    stopwords.words("english"))]
                 i = " ".join(i)
                 summary_preprocessed.append(i)
-            
+
             comm_books['Summary'] = summary_preprocessed
             summary_transform = cv.fit_transform(comm_books['Summary'])
-            summary_sim = cosine_similarity(summary_transform) 
-            book_index = comm_books[comm_books['book_title'] == bookname]['index'].values[0]
+            summary_sim = cosine_similarity(summary_transform)
+            book_index = comm_books[comm_books['book_title']
+                                    == bookname]['index'].values[0]
             sim_books = list(enumerate(summary_sim[book_index]))
-            sim_books_top_two = sorted(sim_books,key=lambda x:x[1],reverse=True)[1:3]
+            sim_books_top_two = sorted(
+                sim_books, key=lambda x: x[1], reverse=True)[1:3]
 
             recom_temp3 = []
             for i in range(len(sim_books_top_two)):
-                recom_temp3.append(comm_books[comm_books['index'] == sim_books_top_two[i][0]]['book_title'].item())
-                
+                recom_temp3.append(
+                    comm_books[comm_books['index'] == sim_books_top_two[i][0]]['book_title'].item())
+
             for i in recom_temp3:
                 recommendations.append(i)
-                
+
             df_new = df_new[~df_new['book_title'].isin(recommendations)]
-                
-            fig, axs = plt.subplots(1, 5,figsize=(18,5))
-            fig.suptitle('Recommended books for "' + bookname+'" \n', size=22)
-            
-            for i in range(len(recommendations)):      
-                url = df.loc[df['book_title'] == recommendations[i],'img_l'][:1].values[0]
+
+            recommendation_img = []
+            for i in range(len(recommendations)):
+                url = df.loc[df['book_title'] ==
+                             recommendations[i], 'img_l'][:1].values[0]
                 img = Image.open(requests.get(url, stream=True).raw)
-                
-                axs[i].imshow(img)
-                axs[i].axis("off")
-                fig.tight_layout()
-                fig.subplots_adjust(top=0.8)
-                title=str(recommendations[i])
-                
-                axs[i].set_title("\n".join(textwrap.wrap(title,25))+ '\n\n Rating: {}'.format(round(df[df['book_title'] == recommendations[i]]['rating'].mean(),1)), y=-0.45,pad=-15,fontsize=15)
-                fig.show()
+                recommendation_img.append(url)
+
+                title = str(recommendations[i])
+
+            predicted_img = recommendation_img[1]
 
     else:
         print('This book is not in the dataset, please check the book title.')
-        
-    return 0
-   
+
+    return recommendations, recommendation_img, predicted_rating, predicted_book, predicted_img
+
 
 @eel.expose
 def twitter_wordcnt(keyword):

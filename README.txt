@@ -20,6 +20,7 @@
 
     (2) <Install Flask>
         pip3 install flask
+        pip install virtualenv
         virtualenv flask
         cd flask
         source bin/activate

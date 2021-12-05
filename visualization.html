@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>Book Recommendation</title>
@@ -14,9 +15,11 @@
             width: 100%;
             text-align: center;
         }
+
         .row {
             display: flex;
         }
+
         .column_left {
             flex: 70%;
             padding: 15px;
@@ -25,6 +28,7 @@
             font-family: American Typewriter;
             font-size: 20px;
         }
+
         .column_right {
             flex: 30%;
             padding: 15px;
@@ -33,95 +37,104 @@
             font-family: American Typewriter;
             font-size: 20px;
         }
+
         .rate {
             float: left;
             height: 46px;
             padding: 0 10px;
         }
-        .rate:not(:checked) > input {
-            position:absolute;
-            top:-9999px;
+
+        .rate:not(:checked)>input {
+            position: absolute;
+            top: -9999px;
         }
-        .rate:not(:checked) > label {
-            float:right;
-            width:1em;
-            overflow:hidden;
-            white-space:nowrap;
-            cursor:pointer;
-            font-size:30px;
-            color:#ccc;
+
+        .rate:not(:checked)>label {
+            float: right;
+            width: 1em;
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 30px;
+            color: #ccc;
         }
-        .rate:not(:checked) > label:before {
+
+        .rate:not(:checked)>label:before {
             content: '★ ';
         }
-        .rate > input:checked ~ label {
-            color: #ffc700;    
+
+        .rate>input:checked~label {
+            color: #ffc700;
         }
-        .rate:not(:checked) > label:hover,
-        .rate:not(:checked) > label:hover ~ label {
-            color: #deb217;  
+
+        .rate:not(:checked)>label:hover,
+        .rate:not(:checked)>label:hover~label {
+            color: #deb217;
         }
-        .rate > input:checked + label:hover,
-        .rate > input:checked + label:hover ~ label,
-        .rate > input:checked ~ label:hover,
-        .rate > input:checked ~ label:hover ~ label,
-        .rate > label:hover ~ input:checked ~ label {
+
+        .rate>input:checked+label:hover,
+        .rate>input:checked+label:hover~label,
+        .rate>input:checked~label:hover,
+        .rate>input:checked~label:hover~label,
+        .rate>label:hover~input:checked~label {
             color: #c59b08;
         }
-        .category{
-          width: 100%;
-          text-align: center;
+
+        .category {
+            width: 100%;
+            text-align: center;
         }
     </style>
 </head>
-<body style ="background: #faf1cd">
+
+<body style="background: #faf1cd">
     <div style="font-family: American Typewriter; font-size: 40px; text-align: left; margin: 15px;">
-      Recommendation Result:
-      <span style="text-align: right;">
-        <a href='welcome.html'><img src="icon/home.png" alt="Home" width="50" height="50"></a>
-      </span>
+        Recommendation Result:
+        <span style="text-align: right;">
+            <a href='welcome.html'><img src="icon/home.png" alt="Home" width="50" height="50"></a>
+        </span>
     </div>
     <div class="recommendation">
         <!-- <div id=""></div> -->
         <div class="category_div" id="category_div">
-          <!-- <label>Select Category: </label> -->
-          <!-- <select id="categoryDropdown"></select> -->
-          <!-- <div class="book" id="book"></div> -->
+            <!-- <label>Select Category: </label> -->
+            <!-- <select id="categoryDropdown"></select> -->
+            <!-- <div class="book" id="book"></div> -->
         </div>
 
         <div class="row">
             <!--Put visualization in this div-->
-            <div class="column_left"  id="data_vis"></div>
+            <div class="column_left" id="data_vis"></div>
             <!--Put book's information in this div-->
             <div class="column_right" id="book_info"></div>
         </div>
     </div>
     <table>
-      <tr>
-        <td style="font-family: American Typewriter; font-size: 15px; margin: 5px;">Rate this recommendation:</td>
-        <td class="rate">
-          <input type="radio" id="star5" name="rate" value="5" />
-          <label for="star5" title="text">5 stars</label>
-          <input type="radio" id="star4" name="rate" value="4" />
-          <label for="star4" title="text">4 stars</label>
-          <input type="radio" id="star3" name="rate" value="3" />
-          <label for="star3" title="text">3 stars</label>
-          <input type="radio" id="star2" name="rate" value="2" />
-          <label for="star2" title="text">2 stars</label>
-          <input type="radio" id="star1" name="rate" value="1" />
-          <label for="star1" title="text">1 star</label>
-        </td>
-        <td style="font-family: American Typewriter; font-size: 15px; margin: 10px;">Comments: </td>
-        <td>
-          <input type='text' id='comment'>
-          <input id="submit" type="submit" class="btn" onclick="submit();">
-        </td>
-      </tr>
+        <tr>
+            <td style="font-family: American Typewriter; font-size: 15px; margin: 5px;">Rate this recommendation:</td>
+            <td class="rate">
+                <input type="radio" id="star5" name="rate" value="5" />
+                <label for="star5" title="text">5 stars</label>
+                <input type="radio" id="star4" name="rate" value="4" />
+                <label for="star4" title="text">4 stars</label>
+                <input type="radio" id="star3" name="rate" value="3" />
+                <label for="star3" title="text">3 stars</label>
+                <input type="radio" id="star2" name="rate" value="2" />
+                <label for="star2" title="text">2 stars</label>
+                <input type="radio" id="star1" name="rate" value="1" />
+                <label for="star1" title="text">1 star</label>
+            </td>
+            <td style="font-family: American Typewriter; font-size: 15px; margin: 10px;">Comments: </td>
+            <td>
+                <input type='text' id='comment'>
+                <input id="submit" type="submit" class="btn" onclick="submit();">
+            </td>
+        </tr>
     </table>
     <script>
         const params = new URLSearchParams(window.location.search)
         var method = params.get("method");
-        if(method=="age"){
+        if (method == "age") {
             //age recommendation and visualization
             var age_group = params.get("age");
             const width = 960;
@@ -131,258 +144,258 @@
             const adj = 100;
 
             var svg = d3.select(".column_left").append("svg")
-              .attr("preserveAspectRatio", "xMinYMin meet")
-              .attr("viewBox", "-"
-                + adj + " -"
-                + adj + " "
-                + (width + adj * 3) + " "
-                + (height + adj * 3))
-              .style("padding", padding)
-              .style("margin", margin)
-              .classed("svg-content", true);
+                .attr("preserveAspectRatio", "xMinYMin meet")
+                .attr("viewBox", "-"
+                    + adj + " -"
+                    + adj + " "
+                    + (width + adj * 3) + " "
+                    + (height + adj * 3))
+                .style("padding", padding)
+                .style("margin", margin)
+                .classed("svg-content", true);
 
 
             d3.dsv(",", "data/merged_Agedata_final.csv").then(function (data) {
 
-            // console.log("data", data)
-            // console.log(data[1].Age)
+                // console.log("data", data)
+                // console.log(data[1].Age)
 
-              var ageClass = {};
-              data.forEach(function (d) {
+                var ageClass = {};
+                data.forEach(function (d) {
 
-                var ageGroup;
-                var idGroup;
-                if (d.Age != "") {
-                  if (d.Age <= 10) {
-                    idGroup = 0;
-                    ageGroup = '0-10';
-                  } else if (d.Age > 10 && d.Age <= 20) {
-                    idGroup = 1;
-                    ageGroup = '10-20';
-                  } else if (d.Age > 20 && d.Age <= 30) {
-                    idGroup = 2;
-                    ageGroup = '20-30';
-                  } else if (d.Age > 30 && d.Age <= 40) {
-                    idGroup = 3;
-                    ageGroup = '30-40';
-                  } else if (d.Age > 40 && d.Age <= 50) {
-                    idGroup = 4;
-                    ageGroup = '40-50';
-                  } else if (d.Age > 50 && d.Age <= 60) {
-                    idGroup = 5;
-                    ageGroup = '50-60';
-                  } else if (d.Age > 60 && d.Age <= 70) {
-                    idGroup = 6;
-                    ageGroup = '60-70';
-                  } else if (d.Age > 70 && d.Age <= 80) {
-                    idGroup = 7;
-                    ageGroup = '70-80';
-                  } else if (d.Age > 80 && d.Age <= 90) {
-                    idGroup = 8;
-                    ageGroup = '80-90';
-                  } else if (d.Age > 90) {
-                    idGroup = 9;
-                    ageGroup = '>90';
-                  }
-                }
-
-                if (!ageClass[idGroup]) {
-                  ageClass[idGroup] = [];
-                }
-                if (d.Age != " ") {
-                  ageClass[idGroup].push({ ageGroup: ageGroup, age: d.Age, ISBN: d.ISBN, Book: d["Book-Title"], Pic: d["Image-URL-M"] });
-                }
-              });
-
-              //console.log("ageClass", ageClass)
-              var AgeCountData = [];
-              var sum = 0;
-              for (const [key, value] of Object.entries(ageClass)) {
-                if (key != "undefined") {
-                  var groupBook = [];
-                  var maxCount = 0;
-
-                  for (var i = 0; i < value.length; i++) {
-                    var item = value[i];
-                    if (item.ISBN != "NULL") {
-
-                      if (!groupBook[item.ISBN]) {
-                        groupBook[item.ISBN] = [];
-                      }
-
-                      groupBook[item.ISBN].push({ ISBM: item.ISBN, Book: item.Book, Pic: item.Pic });
-
-                      if (maxCount < groupBook[item.ISBN].length) {
-                        maxCount = groupBook[item.ISBN].length;
-                        maxItem = item.ISBN
-                        maxBook = item.Book
-                        maxPic = item.Pic
-                      }
+                    var ageGroup;
+                    var idGroup;
+                    if (d.Age != "") {
+                        if (d.Age <= 10) {
+                            idGroup = 0;
+                            ageGroup = '0-10';
+                        } else if (d.Age > 10 && d.Age <= 20) {
+                            idGroup = 1;
+                            ageGroup = '10-20';
+                        } else if (d.Age > 20 && d.Age <= 30) {
+                            idGroup = 2;
+                            ageGroup = '20-30';
+                        } else if (d.Age > 30 && d.Age <= 40) {
+                            idGroup = 3;
+                            ageGroup = '30-40';
+                        } else if (d.Age > 40 && d.Age <= 50) {
+                            idGroup = 4;
+                            ageGroup = '40-50';
+                        } else if (d.Age > 50 && d.Age <= 60) {
+                            idGroup = 5;
+                            ageGroup = '50-60';
+                        } else if (d.Age > 60 && d.Age <= 70) {
+                            idGroup = 6;
+                            ageGroup = '60-70';
+                        } else if (d.Age > 70 && d.Age <= 80) {
+                            idGroup = 7;
+                            ageGroup = '70-80';
+                        } else if (d.Age > 80 && d.Age <= 90) {
+                            idGroup = 8;
+                            ageGroup = '80-90';
+                        } else if (d.Age > 90) {
+                            idGroup = 9;
+                            ageGroup = '>90';
+                        }
                     }
 
-                  }
-                    // console.log("groupBook", groupBook)
-                    // console.log("popularBook", maxCount, maxItem, maxBook, maxPic)
+                    if (!ageClass[idGroup]) {
+                        ageClass[idGroup] = [];
+                    }
+                    if (d.Age != " ") {
+                        ageClass[idGroup].push({ ageGroup: ageGroup, age: d.Age, ISBN: d.ISBN, Book: d["Book-Title"], Pic: d["Image-URL-M"] });
+                    }
+                });
 
-                  AgeCountData.push({ ageId: key, age: value[0].ageGroup, count: value.length, popBook: maxBook, popPic: maxPic })
-                  sum += value.length;
+                //console.log("ageClass", ageClass)
+                var AgeCountData = [];
+                var sum = 0;
+                for (const [key, value] of Object.entries(ageClass)) {
+                    if (key != "undefined") {
+                        var groupBook = [];
+                        var maxCount = 0;
+
+                        for (var i = 0; i < value.length; i++) {
+                            var item = value[i];
+                            if (item.ISBN != "NULL") {
+
+                                if (!groupBook[item.ISBN]) {
+                                    groupBook[item.ISBN] = [];
+                                }
+
+                                groupBook[item.ISBN].push({ ISBM: item.ISBN, Book: item.Book, Pic: item.Pic });
+
+                                if (maxCount < groupBook[item.ISBN].length) {
+                                    maxCount = groupBook[item.ISBN].length;
+                                    maxItem = item.ISBN
+                                    maxBook = item.Book
+                                    maxPic = item.Pic
+                                }
+                            }
+
+                        }
+                        // console.log("groupBook", groupBook)
+                        // console.log("popularBook", maxCount, maxItem, maxBook, maxPic)
+
+                        AgeCountData.push({ ageId: key, age: value[0].ageGroup, count: value.length, popBook: maxBook, popPic: maxPic })
+                        sum += value.length;
+                    }
                 }
-            }
-            var xScale = d3.scaleBand().range([0, width]).padding(0.4),
-                yScale = d3.scaleLinear().range([height, 0]);
+                var xScale = d3.scaleBand().range([0, width]).padding(0.4),
+                    yScale = d3.scaleLinear().range([height, 0]);
 
-            xScale.domain(AgeCountData.map(function (d) { return d.age; }));
-            yScale.domain([0, d3.max(AgeCountData, function (d) { return d.count; })]);
+                xScale.domain(AgeCountData.map(function (d) { return d.age; }));
+                yScale.domain([0, d3.max(AgeCountData, function (d) { return d.count; })]);
 
-            var xAxis = d3.axisBottom().scale(xScale);
-            var yAxis = d3.axisLeft().scale(yScale)
-                .tickFormat(function (d) {
-                    return d;
-                }).ticks(5);
-
-
-            svg.append("text")
-                .attr("y", -adj * 0.5)
-                .attr("x", width / 2 - adj * 1.6)
-                .attr("font-size", "30px")
-                .text("Age-based Recommendation")
-
-            svg.append("g")
-                .attr("id", "x-axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
-
-            svg.append("g")
-                .attr("id", "y-axis")
-                .call(yAxis);
-
-            svg.append("text")
-                .attr("id", "x-axis label")
-                .attr("y", height + 50)
-                .attr("x", width / 2)
-                .text("Age");
-
-            svg.append("text")
-                .attr("id", "y-axis label")
-                .attr("transform", "rotate(-90)")
-                .attr("dy", "1em")
-                .attr("y", -adj * 0.8)
-                .attr("x", -adj * 3)
-                .text("Population");
-
-            svg.append('g')
-                .attr('class', 'grid')
-                .style("color", "Gainsboro")
-                .attr("stroke-width", "1")
-                .call(d3.axisLeft()
-                    .scale(yScale)
-                    .tickSize(-width, 0, 0)
-                    .tickFormat(''))
-
-            // right column
-            var showAgePopBooks = d3.select(".column_right")
-            showAgePopBooks.append('div')
-                .append('p')
-                .text("Let's see what's the hottest book in your age group...")
-
-            const tooltip = d3.select(".column_left").append('div')
-                .attr('class', 'tooltip')
-                .style('opacity', 0);
-
-            const tooltipPic = d3.select(".column_left").append('div')
-                .attr('class', 'tooltipPic')
-                .style('opacity', 0);
-
-            var bar = svg.selectAll(".bar")
-                .data(AgeCountData)
-                .enter().append("rect")
-                .attr("class", "bar")
-                .style("fill", "LightSteelBlue")
-                .on("mouseover", onMouseOver)
-                .on("mouseout", onMouseOut)
-                .attr("x", function (d) { return xScale(d.age); })
-                .attr("y", function (d) { return yScale(d.count); })
-                .attr("width", xScale.bandwidth())
-                .attr("height", function (d) { return height - yScale(d.count); });
-
-
-
-            //mouseover event handler function
-            function onMouseOver(d, i) {
-
-                d3.select(this).attr('class', 'highlight');
-                d3.select(this)
-                    .transition()     // adds animation
-                    .duration(300)
-                    .style("fill", "LightBlue")
-                    .attr('width', xScale.bandwidth() + 3)
-                    .attr("y", function (d) { return yScale(d.count) - 10; })
-                    .attr("height", function (d) { return height - yScale(d.count) + 10; });
+                var xAxis = d3.axisBottom().scale(xScale);
+                var yAxis = d3.axisLeft().scale(yScale)
+                    .tickFormat(function (d) {
+                        return d;
+                    }).ticks(5);
 
 
                 svg.append("text")
-                    .attr('class', 'val')
-                    .attr('x', function () {
-                        return xScale(d.age) + 15;
-                    })
-                    .attr('y', function () {
-                        return yScale(d.count) - 15;
-                    })
-                    .text(function () {
-                        return (d3.format(".2s")([d.count] / sum * 100)) + "%";  // Value of the text
-                    });
+                    .attr("y", -adj * 0.5)
+                    .attr("x", width / 2 - adj * 1.6)
+                    .attr("font-size", "30px")
+                    .text("Age-based Recommendation")
 
+                svg.append("g")
+                    .attr("id", "x-axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(xAxis);
 
-                var string = "<img src="  + d.popPic + "/>";
+                svg.append("g")
+                    .attr("id", "y-axis")
+                    .call(yAxis);
 
-                // https://codepen.io/jackdbd/pen/NAEdBG
-                tooltip.transition().duration(200)
-                    .style('opacity', 0.9);
-                tooltip.html(`Title: <span>${d.popBook}</span>`)
-                    .style('left', `${(d3.event.layerX + 13)}px`)
-                    .style('top', `${(d3.event.layerY - 28)}px`);
+                svg.append("text")
+                    .attr("id", "x-axis label")
+                    .attr("y", height + 50)
+                    .attr("x", width / 2)
+                    .text("Age");
 
-                // image in tooltip
-                tooltipPic.transition().duration(200)
-                    .style('opacity', 0.9);
+                svg.append("text")
+                    .attr("id", "y-axis label")
+                    .attr("transform", "rotate(-90)")
+                    .attr("dy", "1em")
+                    .attr("y", -adj * 0.8)
+                    .attr("x", -adj * 3)
+                    .text("Population");
 
-                tooltipPic.html(string)
-                    .style("left", d3.event.pageX + "px")
-                    .style("top", d3.event.pageY -8.4 + "px");
+                svg.append('g')
+                    .attr('class', 'grid')
+                    .style("color", "Gainsboro")
+                    .attr("stroke-width", "1")
+                    .call(d3.axisLeft()
+                        .scale(yScale)
+                        .tickSize(-width, 0, 0)
+                        .tickFormat(''))
 
+                // right column
+                var showAgePopBooks = d3.select(".column_right")
+                showAgePopBooks.append('div')
+                    .append('p')
+                    .text("Let's see what's the hottest book in your age group...")
 
-            }
+                const tooltip = d3.select(".column_left").append('div')
+                    .attr('class', 'tooltip')
+                    .style('opacity', 0);
 
-            //mouseout event handler function
-            function onMouseOut(d, i) {
+                const tooltipPic = d3.select(".column_left").append('div')
+                    .attr('class', 'tooltipPic')
+                    .style('opacity', 0);
 
-                // use the text label class to remove label on mouseout
-                d3.select(this).attr('class', 'bar');
-                d3.select(this)
-                    .transition()     // adds animation
-                    .duration(300)
+                var bar = svg.selectAll(".bar")
+                    .data(AgeCountData)
+                    .enter().append("rect")
+                    .attr("class", "bar")
                     .style("fill", "LightSteelBlue")
-                    .attr('width', xScale.bandwidth())
+                    .on("mouseover", onMouseOver)
+                    .on("mouseout", onMouseOut)
+                    .attr("x", function (d) { return xScale(d.age); })
                     .attr("y", function (d) { return yScale(d.count); })
+                    .attr("width", xScale.bandwidth())
                     .attr("height", function (d) { return height - yScale(d.count); });
 
-                d3.selectAll('.val')
-                    .remove()
 
-                tooltip.transition().duration(200)
-                    .style('opacity', 0)
-                tooltipPic.transition().duration(200)
-                    .style('opacity', 0)
 
-            }
-        });    
+                //mouseover event handler function
+                function onMouseOver(d, i) {
+
+                    d3.select(this).attr('class', 'highlight');
+                    d3.select(this)
+                        .transition()     // adds animation
+                        .duration(300)
+                        .style("fill", "LightBlue")
+                        .attr('width', xScale.bandwidth() + 3)
+                        .attr("y", function (d) { return yScale(d.count) - 10; })
+                        .attr("height", function (d) { return height - yScale(d.count) + 10; });
+
+
+                    svg.append("text")
+                        .attr('class', 'val')
+                        .attr('x', function () {
+                            return xScale(d.age) + 15;
+                        })
+                        .attr('y', function () {
+                            return yScale(d.count) - 15;
+                        })
+                        .text(function () {
+                            return (d3.format(".2s")([d.count] / sum * 100)) + "%";  // Value of the text
+                        });
+
+
+                    var string = "<img src=" + d.popPic + "/>";
+
+                    // https://codepen.io/jackdbd/pen/NAEdBG
+                    tooltip.transition().duration(200)
+                        .style('opacity', 0.9);
+                    tooltip.html(`Title: <span>${d.popBook}</span>`)
+                        .style('left', `${(d3.event.layerX + 13)}px`)
+                        .style('top', `${(d3.event.layerY - 28)}px`);
+
+                    // image in tooltip
+                    tooltipPic.transition().duration(200)
+                        .style('opacity', 0.9);
+
+                    tooltipPic.html(string)
+                        .style("left", d3.event.pageX + "px")
+                        .style("top", d3.event.pageY - 8.4 + "px");
+
+
+                }
+
+                //mouseout event handler function
+                function onMouseOut(d, i) {
+
+                    // use the text label class to remove label on mouseout
+                    d3.select(this).attr('class', 'bar');
+                    d3.select(this)
+                        .transition()     // adds animation
+                        .duration(300)
+                        .style("fill", "LightSteelBlue")
+                        .attr('width', xScale.bandwidth())
+                        .attr("y", function (d) { return yScale(d.count); })
+                        .attr("height", function (d) { return height - yScale(d.count); });
+
+                    d3.selectAll('.val')
+                        .remove()
+
+                    tooltip.transition().duration(200)
+                        .style('opacity', 0)
+                    tooltipPic.transition().duration(200)
+                        .style('opacity', 0)
+
+                }
+            });
         }
-        else if(method=="region"){
+        else if (method == "region") {
             //region recommendation and visualization
             var region = params.get("region");
 
             // Define margin and dimensions for svg
-            var	margin = {top: -40, right: 200, bottom: 30, left: 100};
+            var margin = { top: -40, right: 200, bottom: 30, left: 100 };
             var ww = 1400;
             var hh = 700;
             var w = ww - margin.left - margin.right;
@@ -391,9 +404,9 @@
 
             // Create svg
             var showFiveBooksDiv = d3.select(".column_right")
-              .append('div')
-              .append('p')
-              .text("Guess you like...");
+                .append('div')
+                .append('p')
+                .text("Guess you like...");
 
             // d3.select(".column_left")
             //   .append('div')
@@ -401,29 +414,29 @@
             //   .text("See what other country's people like");
 
             var svg = d3.select(".column_left")
-              .append("svg")
-              .attr("preserveAspectRatio", "xMinYMin meet")
-              .style("background-color", "#5d757e")
-              .style("padding", 0)
-              .style("margin", -15)
-              .attr("viewBox", "0 0 " + w + " " + h)
-              .classed("svg-content", true);
+                .append("svg")
+                .attr("preserveAspectRatio", "xMinYMin meet")
+                .style("background-color", "#5d757e")
+                .style("padding", 0)
+                .style("margin", -15)
+                .attr("viewBox", "0 0 " + w + " " + h)
+                .classed("svg-content", true);
 
             var countryPaths = svg.append('g')
-              .attr('id', 'countries');
+                .attr('id', 'countries');
 
             // Define projection & path required for world map
             var projection = d3.geoNaturalEarth1()
-              .translate([w/2, h/2])
-              .scale(215)
-              .center([15, 0]);
+                .translate([w / 2, h / 2])
+                .scale(215)
+                .center([15, 0]);
 
             var path = d3.geoPath()
-              .projection(projection);
+                .projection(projection);
 
             // Load data  
-            var worldmap = d3.json('data/world_countries.json', function(err, jsondata) {
-              // console.log(jsondata);
+            var worldmap = d3.json('data/world_countries.json', function (err, jsondata) {
+                // console.log(jsondata);
             });
 
             var bookRegionWeight = d3.csv('data/region_score_sort.csv');
@@ -432,252 +445,376 @@
                 // Read files
                 worldmap,
                 bookRegionWeight
-              ])
-              .then(function(data) {
-                // Call ready() 
-                ready(0, data[0], data[1]);
-              });
+            ])
+                .then(function (data) {
+                    // Call ready() 
+                    ready(0, data[0], data[1]);
+                });
 
             // Preprocess data
             function ready(error, world, b) {
-              // console.log(book);
-              book = b;
-              var selectedCountry = region;
-              
-              var cnt = 0;
-              var fiveBooks = [];
-              for (var i = 0; i < book.length; ++i) {
-                if (book[i]['country'] === selectedCountry) {
-                  fiveBooks.push(book[i]);
-                  cnt = cnt + 1;
-                  if (cnt >= 5) break;
+                // console.log(book);
+                book = b;
+                var selectedCountry = region;
+
+                var cnt = 0;
+                var fiveBooks = [];
+                for (var i = 0; i < book.length; ++i) {
+                    if (book[i]['country'] === selectedCountry) {
+                        fiveBooks.push(book[i]);
+                        cnt = cnt + 1;
+                        if (cnt >= 5) break;
+                    }
                 }
-              }
-              // Call createMapAndLegend() 
-              createMapAndLegend(world, fiveBooks, selectedCountry);
+                // Call createMapAndLegend() 
+                createMapAndLegend(world, fiveBooks, selectedCountry);
             }
 
             function searchFiveBooks(selected) {
-              var selectedCountry = selected.toLowerCase();
-              var cnt = 0;
-              var fiveBooks = [];
-              for (var i = 0; i < book.length; ++i) {
-                if (book[i]['country'] === selectedCountry) {
-                  fiveBooks.push(book[i]);
-                  cnt = cnt + 1;
-                  if (cnt >= 5) break;
+                var selectedCountry = selected.toLowerCase();
+                var cnt = 0;
+                var fiveBooks = [];
+                for (var i = 0; i < book.length; ++i) {
+                    if (book[i]['country'] === selectedCountry) {
+                        fiveBooks.push(book[i]);
+                        cnt = cnt + 1;
+                        if (cnt >= 5) break;
+                    }
                 }
-              }
-              return fiveBooks;
+                return fiveBooks;
             }
 
             // Create a world map and recommend books for a selected country
-            function createMapAndLegend(world, fiveBooks, selectedCountry) { 
-              // console.log(world);
-              // Define a tooltip
-              var tooltip2;
+            function createMapAndLegend(world, fiveBooks, selectedCountry) {
+                // console.log(world);
+                // Define a tooltip
+                var tooltip2;
 
-              // Draw the boundaries of countries
-              countryPaths.selectAll("path")
-                .data(world.features)
-                .enter()
-                .append("path")
-                .attr("stroke", "#a09daf")
-                .attr("class", "countries")
-                .attr("d", path)
-                .attr('fill', function(d) {
-                  var countryName = d.properties.name.toLowerCase();
-                  if (countryName === region.toLowerCase())
-                    return '#ace8e1';
-                  return '#2E3E3C'; 
-                })
-                .on('mouseover', function(d) {
-                  // Change color of a country
-                  d3.select(this)
-                    .attr('fill', '#61716f');
+                // Draw the boundaries of countries
+                countryPaths.selectAll("path")
+                    .data(world.features)
+                    .enter()
+                    .append("path")
+                    .attr("stroke", "#a09daf")
+                    .attr("class", "countries")
+                    .attr("d", path)
+                    .attr('fill', function (d) {
+                        var countryName = d.properties.name.toLowerCase();
+                        if (countryName === region.toLowerCase())
+                            return '#ace8e1';
+                        return '#2E3E3C';
+                    })
+                    .on('mouseover', function (d) {
+                        // Change color of a country
+                        d3.select(this)
+                            .attr('fill', '#61716f');
 
-                  // Everytime mouseover, recreate a tooltip
-                  var countryName = d.properties.name;
-                  tooltip2 = d3.select(".column_left")
-                    .append("div")
-                    .attr('id', 'tooltip')
-                    .style("position", "absolute")
-                    .style("visibility", "hidden")
-                    .style("background-color", "white")
-                    .style("border", "solid")
-                    .style("border-width", "1px")
-                    .style("border-radius", "5px")
-                    .style("padding", "10px");
+                        // Everytime mouseover, recreate a tooltip
+                        var countryName = d.properties.name;
+                        tooltip2 = d3.select(".column_left")
+                            .append("div")
+                            .attr('id', 'tooltip')
+                            .style("position", "absolute")
+                            .style("visibility", "hidden")
+                            .style("background-color", "white")
+                            .style("border", "solid")
+                            .style("border-width", "1px")
+                            .style("border-radius", "5px")
+                            .style("padding", "10px");
 
-                  // Show 5 books on the tooltip
-                  var fb = searchFiveBooks(countryName);
-                  d3.select('#tooltip')
-                    .append('text')
-                    .html('<p>' + countryName + '</p>');
-                  if (fb.length > 0) {
-                    d3.select('#tooltip')
-                      .selectAll('img')
-                      .data(fb)
-                      .enter()
-                      .append('img')
-                      .attr('src', function(d, i) { return fb[i]['img_s']; });
-                  }
-                  else {
-                    d3.select('#tooltip')
-                      .append('text')
-                      .html('<p>No books!</p>');
-                  }
-                  return tooltip2.style("visibility", "visible");
-                })
-                .on('mousemove', function() { 
-                  return tooltip2.style("top", (event.pageY-0)+"px").style("left", (event.pageX-300)+"px");
-                })
-                .on('mouseout', function(d) {
-                  // Change color of a country
-                  var countryName = d.properties.name.toLowerCase();
-                  if (countryName === region.toLowerCase())
-                    d3.select(this)
-                      .attr('fill', '#ace8e1');
-                  else {
-                    d3.select(this)
-                      .attr('fill', '#2E3E3C');
-                  }
-                  // Everytime mouseout, delete tooltip 
-                  d3.select('#tooltip').remove();
-                  // return tooltip2.style("visibility", "hidden");
-                });
+                        // Show 5 books on the tooltip
+                        var fb = searchFiveBooks(countryName);
+                        d3.select('#tooltip')
+                            .append('text')
+                            .html('<p>' + countryName + '</p>');
+                        if (fb.length > 0) {
+                            d3.select('#tooltip')
+                                .selectAll('img')
+                                .data(fb)
+                                .enter()
+                                .append('img')
+                                .attr('src', function (d, i) { return fb[i]['img_s']; });
+                        }
+                        else {
+                            d3.select('#tooltip')
+                                .append('text')
+                                .html('<p>No books!</p>');
+                        }
+                        return tooltip2.style("visibility", "visible");
+                    })
+                    .on('mousemove', function () {
+                        return tooltip2.style("top", (event.pageY - 0) + "px").style("left", (event.pageX - 300) + "px");
+                    })
+                    .on('mouseout', function (d) {
+                        // Change color of a country
+                        var countryName = d.properties.name.toLowerCase();
+                        if (countryName === region.toLowerCase())
+                            d3.select(this)
+                                .attr('fill', '#ace8e1');
+                        else {
+                            d3.select(this)
+                                .attr('fill', '#2E3E3C');
+                        }
+                        // Everytime mouseout, delete tooltip 
+                        d3.select('#tooltip').remove();
+                        // return tooltip2.style("visibility", "hidden");
+                    });
 
                 showFiveBooksDiv.append('div')
-                  .append('img')
-                  .attr("src", fiveBooks[0]['img_l']);
-                
+                    .append('img')
+                    .attr("src", fiveBooks[0]['img_l']);
+
                 showFiveBooksDiv.append('text')
-                  .html('Book Name: ' + fiveBooks[0]['book_title'] + '</br>' +
+                    .html('Book Name: ' + fiveBooks[0]['book_title'] + '</br>' +
                         'ISBN: ' + fiveBooks[0]['isbn'] + '</br>');
             } // end of createMapAndLegend()
         }
-        else if(method=="category"){
+        else if (method == "category") {
             //category recommendation and visualization
             var category = params.get("category");
             var catDiv = d3.select('.category_div');
             var selectTag = catDiv.append('select');
             var showFiveBooksDiv = catDiv.append('div')
-              .attr('class', "book")
-              .attr('id', "book");
+                .attr('class', "book")
+                .attr('id', "book");
 
 
-            d3.dsv(",", "data/cat_score_sort.csv", function(d) {
-              // console.log(d);
-              return d;
+            d3.dsv(",", "data/cat_score_sort.csv", function (d) {
+                // console.log(d);
+                return d;
             })
-            .then(function(book) {
-              // console.log(book);
-            
-              var selectedCategory = category;
-              var cnt = 0;
-              var fiveBooks = [];
-              for (var i = 0; i < book.length; ++i) {
-                if (book[i]['Category'] == selectedCategory) {
-                  fiveBooks.push(book[i]);
-                  cnt = cnt + 1;
-                  if (cnt >= 5) break;
-                }
-              }
-              console.log(selectedCategory);
-              console.log(fiveBooks);
+                .then(function (book) {
+                    // console.log(book);
 
-              var unique_categories= [...new Set(book.map(item => item.Category))];
-              unique_categories = unique_categories.sort()
-
-              // Append options
-              selectTag.selectAll("option")
-                .data(unique_categories)
-                .enter()
-                .append("option")
-                .attr("value", function(d) { return d; })
-                .append("text")
-                .text(function(d) {return d;})
-                .property("selected", function(d) {
-                    return d === selectedCategory;
-                });
-              
-              selectTag.on("change", function(d) {
-                  selectedCategory = d3.select(this).property("value");
-                
-                  showFiveBooksDiv.selectAll("img").remove();
-                  showFiveBooksDiv.selectAll("text").remove();
-                  
-                  var cnt = 0;
-                  fiveBooks = [];
-                  for (var i = 0; i < book.length; ++i) {
-                    if (book[i]['Category'] == selectedCategory) {
-                      fiveBooks.push(book[i]);
-                      cnt = cnt + 1;
-                      if (cnt >= 5) break;
+                    var selectedCategory = category;
+                    var cnt = 0;
+                    var fiveBooks = [];
+                    for (var i = 0; i < book.length; ++i) {
+                        if (book[i]['Category'] == selectedCategory) {
+                            fiveBooks.push(book[i]);
+                            cnt = cnt + 1;
+                            if (cnt >= 5) break;
+                        }
                     }
-                  }
-                  createMapAndLegend(fiveBooks, selectedCategory)
-              });
+                    console.log(selectedCategory);
+                    console.log(fiveBooks);
 
-              createMapAndLegend(fiveBooks, selectedCategory);
+                    var unique_categories = [...new Set(book.map(item => item.Category))];
+                    unique_categories = unique_categories.sort()
 
-              function createMapAndLegend(fiveBooks, selectedCategory) { 
-                showFiveBooksDiv.selectAll("img")
-                  .data(fiveBooks)
-                  .enter()
-                  .append('img')
-                  .attr("src", function(d, i) { return fiveBooks[i]['img_l'] });
-                
-                showFiveBooksDiv.selectAll('text')
-                  .data(fiveBooks)
-                  .enter()
-                  .append('text')
-                  .html(function(d, i) { 
-                    return '</br>'+ 'Book Name: ' + fiveBooks[i]['book_title'] + ', ' +
-                          'ISBN: ' + fiveBooks[i]['isbn'] + '</br>';  
-                  });           
-              }
-          }); // end of then  
+                    // Append options
+                    selectTag.selectAll("option")
+                        .data(unique_categories)
+                        .enter()
+                        .append("option")
+                        .attr("value", function (d) { return d; })
+                        .append("text")
+                        .text(function (d) { return d; })
+                        .property("selected", function (d) {
+                            return d === selectedCategory;
+                        });
+
+                    selectTag.on("change", function (d) {
+                        selectedCategory = d3.select(this).property("value");
+
+                        showFiveBooksDiv.selectAll("img").remove();
+                        showFiveBooksDiv.selectAll("text").remove();
+
+                        var cnt = 0;
+                        fiveBooks = [];
+                        for (var i = 0; i < book.length; ++i) {
+                            if (book[i]['Category'] == selectedCategory) {
+                                fiveBooks.push(book[i]);
+                                cnt = cnt + 1;
+                                if (cnt >= 5) break;
+                            }
+                        }
+                        createMapAndLegend(fiveBooks, selectedCategory)
+                    });
+
+                    createMapAndLegend(fiveBooks, selectedCategory);
+
+                    function createMapAndLegend(fiveBooks, selectedCategory) {
+                        showFiveBooksDiv.selectAll("img")
+                            .data(fiveBooks)
+                            .enter()
+                            .append('img')
+                            .attr("src", function (d, i) { return fiveBooks[i]['img_l'] });
+
+                        showFiveBooksDiv.selectAll('text')
+                            .data(fiveBooks)
+                            .enter()
+                            .append('text')
+                            .html(function (d, i) {
+                                return '</br>' + 'Book Name: ' + fiveBooks[i]['book_title'] + ', ' +
+                                    'ISBN: ' + fiveBooks[i]['isbn'] + '</br>';
+                            });
+                    }
+                }); // end of then  
         }
-        else if(method=="book"){
+        else if (method == "book") {
             //rating recommendation and visualization
             var bookname = params.get("bookname");
-        }
-        else if(method=="twitter"){
-          var keyword = params.get("keyword");
-          var margin = {top: 10, right: 10, bottom: 10, left: 10},
-                    width = 450 - margin.left - margin.right,
-                    height = 450 - margin.top - margin.bottom;
+
+            var margin = { top: 30, right: 50, bottom: 50, left: 50 },
+                width = 500 - margin.left - margin.right,
+                height = 480 - margin.top - margin.bottom;
 
             var svg = d3.select("#data_vis").append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
-            .append("g")
+                .append("g")
+                .attr("transform",
+                    "translate(" + margin.left * 2 + "," + margin.top + ")");
+
+            // console.log(bookname);
+            async function run() {
+                let recommendation = await eel.comprehensive_cf(bookname)();
+                book_title = recommendation[0] // comprehensive_based
+                imag_url = recommendation[1]  // comprehensive_based
+                predicted_rating = recommendation[2] // content-based
+                predicted_book = recommendation[3] // content-based
+                predicted_url = recommendation[4] // content-based
+                console.log(predicted_book);
+                console.log(predicted_url);
+                console.log(predicted_rating);
+
+                barchart_data = []
+
+                for (i = 0; i < 5; i++) {
+                    predicted_rating_percentage = predicted_rating[i] * 100
+                    barchart_data.push({ book: predicted_book[i], rating: predicted_rating_percentage })
+                }
+
+                console.log(barchart_data)
+
+                var showBooks = d3.select(".column_right");
+                showBooks.append('div')
+                    .append('img')
+                    .attr("src", predicted_url);
+
+                var xScale = d3.scaleBand().range([0, width]).padding(0.4),
+                    yScale = d3.scaleLinear().range([height, 0]);
+
+                xScale.domain(barchart_data.map(function (d) { return d.book; }));
+                yScale.domain([0, d3.max(barchart_data, function (d) { return d.rating; })]);
+
+                var xAxis = d3.axisBottom().scale(xScale);
+                var yAxis = d3.axisLeft().scale(yScale)
+                    .tickFormat(function (d) {
+                        return d;
+                    }).ticks(5);
+
+                svg.append("g")
+                    .attr("id", "x-axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .transition()
+                    .call(xAxis)
+                    .on("end", function () {
+                        d3.select(this)
+                            .selectAll(".tick text")
+                            .call(wrap, xScale.bandwidth() * 1.8)
+                    });
+
+                svg.append("g")
+                    .attr("id", "y-axis")
+                    .call(yAxis);
+
+                svg.append("g")
+                    .append("text")
+                    .attr("id", "x-axis label")
+                    .attr("y", height + 45)
+                    .attr("x", width / 2)
+                    .attr("fontSize", 8)
+                    .text("Book Title");
+
+                svg.append("g")
+                    .append("text")
+                    .attr("id", "y-axis label")
+                    .attr("y", height)
+                    .attr("x", width / 2)
+                    .attr("transform", "rotate(-90)")
+                    .text("Predicted rating");
+
+                var bar = svg.selectAll(".bar")
+                    .data(barchart_data)
+                    .enter().append("rect")
+                    .attr("class", "bar")
+                    .style("fill", "#ffc700")
+                    .attr("x", function (d) { return xScale(d.book); })
+                    .attr("y", function (d) { return yScale(d.rating); })
+                    .attr("width", xScale.bandwidth())
+                    .attr("height", function (d) { return height - yScale(d.rating); });
+
+
+
+                showBooks.append('text')
+                    .html('\nBook Name: ' + predicted_book[0] + '</br>')
+
+
+                function wrap(text, width) {
+                    text.each(function () {
+                        var text = d3.select(this),
+                            words = text.text().split(/\s+/).reverse(),
+                            word,
+                            line = [],
+                            lineNumber = 0,
+                            lineHeight = 1.1, // ems
+                            y = text.attr("y"),
+                            dy = parseFloat(text.attr("dy")),
+                            tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+                        while (word = words.pop()) {
+                            line.push(word);
+                            tspan.text(line.join(" "));
+                            if (tspan.node().getComputedTextLength() > width) {
+                                line.pop();
+                                tspan.text(line.join(" "));
+                                line = [word];
+                                tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+                            }
+                        }
+                    });
+                }
+            }
+            run();
+
+        }
+        else if (method == "twitter") {
+
+            var keyword = params.get("keyword");
+            var margin = { top: 10, right: 10, bottom: 10, left: 10 },
+                width = 450 - margin.left - margin.right,
+                height = 450 - margin.top - margin.bottom;
+
+            var svg = d3.select("#data_vis").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
                 .attr("transform",
                     "translate(" + margin.left + "," + margin.top + ")");
-                    var layout = d3.layout.cloud();
+            var layout = d3.layout.cloud();
             //console.log(myWords)
             document.getElementById('book_info').innerHTML = "Loading...";
             async function run() {
-                let results= await eel.twitter_wordcnt(keyword)();
-                bookname=results[0]
-                bookisbn=results[1]
-                bookimg=results[2]
-                myWords=results[3]
+                let results = await eel.twitter_wordcnt(keyword)();
+                bookname = results[0]
+                bookisbn = results[1]
+                bookimg = results[2]
+                myWords = results[3]
                 console.log(myWords);
                 document.getElementById('book_info').innerHTML = "";
                 var showBooks = d3.select(".column_right");
                 showBooks.append('div')
-                  .append('img')
-                  .attr("src", bookimg);
+                    .append('img')
+                    .attr("src", bookimg);
                 showBooks.append('text')
-                  .html('Book Name: ' + bookname+ '</br>' +
+                    .html('Book Name: ' + bookname + '</br>' +
                         'ISBN: ' + bookisbn + '</br>')
                 layout.size([width, height])
-                    .words(myWords.map(function(d) { return {text: d.word, size:d.size}; }))
+                    .words(myWords.map(function (d) { return { text: d.word, size: d.size }; }))
                     .padding(12)        //space between words
-                    .rotate(function() { return ~~(Math.random() * 2) * 90; })
-                    .fontSize(function(d) { return d.size; })      // font size of words
+                    .rotate(function () { return ~~(Math.random() * 2) * 90; })
+                    .fontSize(function (d) { return d.size; })      // font size of words
                     .on("end", draw);
                 layout.start();
 
@@ -687,18 +824,19 @@
                 svg.append("g")
                     .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
                     .selectAll("text")
-                        .data(words)
+                    .data(words)
                     .enter().append("text")
-                        .style("font-size", function(d) { return d.size; })
-                        .style("fill", "#69b3a2")
-                        .attr("text-anchor", "middle")
-                        .style("font-family", "Impact")
-                        .attr("transform", function(d) {
+                    .style("font-size", function (d) { return d.size; })
+                    .style("fill", "#69b3a2")
+                    .attr("text-anchor", "middle")
+                    .style("font-family", "Impact")
+                    .attr("transform", function (d) {
                         return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                        })
-                        .text(function(d) { return d.text; });
+                    })
+                    .text(function (d) { return d.text; });
             }
         }
     </script>
 </body>
+
 </html>

@@ -577,6 +577,11 @@
             var showFiveBooksDiv = catDiv.append('div')
                 .attr('class', "book")
                 .attr('id', "book");
+            // Define a tooltip
+            var tooltip1;
+            var book_cat_data;
+            var greenCode = '#69b3a2';
+            var lightGreenCode = '#3d796b';
 
 
             d3.dsv(",", "data/cat_score_sort.csv", function (d) {
@@ -584,7 +589,8 @@
                 return d;
             })
                 .then(function (book) {
-                    // console.log(book);
+                    console.log(book);
+                    book_cat_data = book;
 
                     var selectedCategory = category;
                     var cnt = 0;
@@ -635,20 +641,6 @@
                     createMapAndLegend(fiveBooks, selectedCategory);
 
                     function createMapAndLegend(fiveBooks, selectedCategory) {
-                        // showFiveBooksDiv.selectAll("img")
-                        //     .data(fiveBooks)
-                        //     .enter()
-                        //     .append('img')
-                        //     .attr("src", function (d, i) { return fiveBooks[i]['img_l'] });
-
-                        // showFiveBooksDiv.selectAll('text')
-                        //     .data(fiveBooks)
-                        //     .enter()
-                        //     .append('text')
-                        //     .html(function (d, i) {
-                        //         return '</br>' + 'Book Name: ' + fiveBooks[i]['book_title'] + ', ' +
-                        //             'ISBN: ' + fiveBooks[i]['isbn'] + '</br>';
-                        //     });
                         d3.select('.column_right').append('div')
                             .append('img')
                             .attr("src", fiveBooks[0]['img_l']);
@@ -680,41 +672,101 @@
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");  // moves the 'group' element to the top left margin
 
             // Load the data
-            d3.csv("data/cat_count_sort.csv").then(function (data) {
-                // Format the data
-                data.forEach(function (d) {
-                    d.count = +d.count;
-                    d.log_count = +d.log_count;
+            d3.csv("data/cat_count_sort.csv").then(function(data) {
+              // Format the data
+              data.forEach(function(d) {
+                d.count = +d.count;
+                d.log_count = +d.log_count;
+              });
+
+              function searchFiveBooks(selected) {
+                var cnt = 0;
+                var fiveBooks = [];
+                for (var i = 0; i < book_cat_data.length; ++i) {
+                    if (book_cat_data[i]['Category'] === selected) {
+                        fiveBooks.push(book_cat_data[i]);
+                        cnt = cnt + 1;
+                        if (cnt >= 5) break;
+                    }
+                }
+                return fiveBooks;
+            }
+
+              // Scale the range of the data in the domains
+              x.domain(data.map(function(d) { return d.Category; }));
+              y.domain([0, d3.max(data, function(d) { return d.log_count; })]);
+
+              // Append the rectangles for the bar chart
+              svg.selectAll(".mybar")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("class", "mybar")
+                .attr("fill", greenCode)
+                .attr("x", function(d) { return x(d.Category); })
+                .attr("width", x.bandwidth())
+                .attr("y", function(d) { return y(d.log_count); })
+                .attr("height", function(d) { return height - y(d.log_count); })
+                .on('mouseover', function (d) {
+                  // Change color of a country
+                  d3.select(this).attr('fill', lightGreenCode);
+
+                  // Everytime mouseover, recreate a tooltip
+                  var countryName = d.Category;
+                  tooltip1 = d3.select(".column_left")
+                      .append("div")
+                      .attr('id', 'tooltip1')
+                      .style("position", "absolute")
+                      .style("visibility", "hidden")
+                      .style("background-color", "white")
+                      .style("border", "solid")
+                      .style("border-width", "1px")
+                      .style("border-radius", "5px")
+                      .style("padding", "10px");
+
+                  // Show 5 books on the tooltip
+                  var fb = searchFiveBooks(countryName);
+                  d3.select('#tooltip1')
+                    .append('text')
+                    .html('<p>' + countryName + '</p>');
+                  if (fb.length > 0) {
+                    d3.select('#tooltip1')
+                      .selectAll('img')
+                      .data(fb)
+                      .enter()
+                      .append('img')
+                      .attr('src', function (d, i) { return fb[i]['img_s']; });
+                  }
+                  else {
+                    d3.select('#tooltip1')
+                      .append('text')
+                      .html('<p>No books!</p>');
+                  }
+                  return tooltip1.style("visibility", "visible");
+                })
+                .on('mousemove', function () {
+                  return tooltip1.style("top", (event.pageY - 200) + "px").style("left", (event.pageX - 0) + "px");
+                })
+                .on('mouseout', function (d) {
+                  // Change color of a bar
+                  d3.select(this).attr('fill', greenCode);
+                  // Everytime mouseout, delete tooltip 
+                  d3.select('#tooltip1').remove();
                 });
 
-                // Scale the range of the data in the domains
-                x.domain(data.map(function (d) { return d.Category; }));
-                y.domain([0, d3.max(data, function (d) { return d.log_count; })]);
+              // Add the x Axis
+              svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x))
+                .selectAll("text")  
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-65)");
 
-                // Append the rectangles for the bar chart
-                svg.selectAll(".mybar")
-                    .data(data)
-                    .enter()
-                    .append("rect")
-                    .attr("class", "mybar")
-                    .attr("x", function (d) { return x(d.Category); })
-                    .attr("width", x.bandwidth())
-                    .attr("y", function (d) { return y(d.log_count); })
-                    .attr("height", function (d) { return height - y(d.log_count); });
-
-                // Add the x Axis
-                svg.append("g")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(d3.axisBottom(x))
-                    .selectAll("text")
-                    .style("text-anchor", "end")
-                    .attr("dx", "-.8em")
-                    .attr("dy", ".15em")
-                    .attr("transform", "rotate(-65)");
-
-                // Add the y Axis
-                svg.append("g")
-                    .call(d3.axisLeft(y));
+              // Add the y Axis
+              svg.append("g")
+                .call(d3.axisLeft(y));
             }); // end of then
         }
         else if (method == "book") {

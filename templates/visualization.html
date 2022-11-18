@@ -6,8 +6,8 @@
     <title>Book Recommendation</title>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
-    <script type="text/javascript" src="lib/d3.v5.min.js"></script>
-    <script type="text/javascript" src="/eel.js"></script>
+    <script type="text/javascript" src="static/lib/d3.v5.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script> 
 
     <style>
         .recommendation {
@@ -91,7 +91,7 @@
     <div style="font-family: American Typewriter; font-size: 40px; text-align: left; margin: 15px;">
         Recommendation Result:
         <span style="text-align: right;">
-            <a href='welcome.html'><img src="icon/home.png" alt="Home" width="50" height="50"></a>
+            <a href='welcome.html'><img src="static/icon/home.png" alt="Home" width="50" height="50"></a>
         </span>
     </div>
     <div class="recommendation">
@@ -132,6 +132,21 @@
         </tr>
     </table>
     <script>
+        
+        // text = "original text";
+
+        // $.ajax({
+        //     type: "GET",
+        //     url: "test_ajax.py",
+        //     data: { param: text }
+        // }).done(function(o) {
+        //     console.log(o);
+        //     console.log('here is the msg in ajax');
+        //     console.log(data);
+        //     console.log('data should be above');
+        // });
+        // console.log('hey');
+
         const params = new URLSearchParams(window.location.search)
         var method = params.get("method");
         if (method == "age") {
@@ -155,7 +170,7 @@
                 .classed("svg-content", true);
 
 
-            d3.dsv(",", "data/merged_Agedata_final.csv").then(function (data) {
+            d3.dsv(",", "static/data/merged_Agedata_final.csv").then(function (data) {
 
                 // console.log("data", data)
                 // console.log(data[1].Age)
@@ -435,11 +450,11 @@
                 .projection(projection);
 
             // Load data  
-            var worldmap = d3.json('data/world_countries.json', function (err, jsondata) {
+            var worldmap = d3.json('static/data/world_countries.json', function (err, jsondata) {
                 // console.log(jsondata);
             });
 
-            var bookRegionWeight = d3.csv('data/region_score_sort.csv');
+            var bookRegionWeight = d3.csv('static/data/region_score_sort.csv');
 
             Promise.all([
                 // Read files
@@ -584,7 +599,7 @@
             var lightGreenCode = '#3d796b';
 
 
-            d3.dsv(",", "data/cat_score_sort.csv", function (d) {
+            d3.dsv(",", "static/data/cat_score_sort.csv", function (d) {
                 // console.log(d);
                 return d;
             })
@@ -672,7 +687,7 @@
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");  // moves the 'group' element to the top left margin
 
             // Load the data
-            d3.csv("data/cat_count_sort.csv").then(function(data) {
+            d3.csv("static/data/cat_count_sort.csv").then(function(data) {
               // Format the data
               data.forEach(function(d) {
                 d.count = +d.count;
@@ -790,10 +805,26 @@
                 .style("margin", margin)
                 .classed("svg-content", true);
 
+                function runPyScript(input) {
+                    var jqXHR = $.ajax({
+                        type: "GET",
+                        url: "/content_based_cf",
+                        async: false,
+                        data: { bookname: input }
+                    });
+                    return jqXHR.responseText;
+                }
+
             // console.log(bookname);
             async function run() {
-                let recommendation = await eel.content_based_cf(bookname)();
-                console.log(recommendation)
+                // let recommendation = await eel.content_based_cf(bookname)();
+                console.log('this is book name: ');
+                console.log(bookname);
+                let returnVal = await runPyScript(bookname);
+                console.log('this is return value: ');
+                console.log(returnVal);
+                console.log(typeof returnVal);
+                let recommendation = JSON.parse(returnVal);
                 if (recommendation == 1) {
                     // input book is not in the dataset
                     svg.append("text")
@@ -831,9 +862,9 @@
                 else {
 
                     // content-based cf
-                    predicted_rating = recommendation[0]
-                    predicted_book = recommendation[1]
-                    predicted_url = recommendation[2]
+                    predicted_rating = recommendation.a;
+                    predicted_book = recommendation.b;
+                    predicted_url = recommendation.c;
                     console.log(predicted_rating);
                     console.log(predicted_book);
                     console.log(predicted_url);
@@ -969,12 +1000,26 @@
             var layout = d3.layout.cloud();
             //console.log(myWords)
             document.getElementById('book_info').innerHTML = "Loading...";
+
+            function runPyScript(input) {
+                var jqXHR = $.ajax({
+                    type: "GET",
+                    url: "/twitter",
+                    async: false,
+                    data: { keyword: input }
+                });
+                return jqXHR.responseText;
+            }
+
             async function run() {
-                let results = await eel.twitter_wordcnt(keyword)();
-                bookname = results[0]
-                bookisbn = results[1]
-                bookimg = results[2]
-                myWords = results[3]
+                // let results = await eel.twitter_wordcnt(keyword)();
+                let returnVal = await runPyScript(keyword);
+                let results = JSON.parse(returnVal);
+                console.log(results);
+                bookname = results.book0
+                bookisbn = results.book1
+                bookimg = results.book2
+                myWords = results.dlist
                 console.log(myWords);
                 document.getElementById('book_info').innerHTML = "";
                 var showBooks = d3.select(".column_right");

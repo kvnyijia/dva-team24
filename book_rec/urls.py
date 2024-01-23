@@ -24,4 +24,5 @@ urlpatterns = [
     path('welcome.html', welcome_view, name=''),
     path('selection.html', selection_view, name=''),
     path('visualization.html', visualization_view, name=''),
+    path('', include('app.urls')),
 ]

@@ -2,3 +2,9 @@
 **/*__pycache__
 env/
 twint/
+
+README.txt
+db.sqlite3
+recommendation.py
+static/data/Preprocessed_data.csv
+static/data/merged_Agedata_final.csv
